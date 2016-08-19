@@ -27,8 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
+# AUTH_USER_MODEL = 'profiles.Profile'
 
 INSTALLED_APPS = [
     'posts.apps.PostsConfig',
@@ -85,8 +85,6 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
-
-AUTH_USER_MODEL = 'profiles.MyUser'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
