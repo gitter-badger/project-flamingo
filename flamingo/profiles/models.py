@@ -83,7 +83,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, primary_key=True)
     birthdate = models.DateField(blank=True, null=True)
-    follows = models.ManyToManyField('Profile', related_name='followed_by')
+    follows = models.ManyToManyField('Profile', related_name='followed_by',
+                                     symmetrical=False, blank=True)
     rating = models.FloatField(
         default=0.0,
         validators=[MinValueValidator(0.0), MaxValueValidator(5.0)]
