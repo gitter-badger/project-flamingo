@@ -1,11 +1,16 @@
 from __future__ import unicode_literals
+from datetime import datetime
 
 
 from django.db import models
-from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth import password_validation
+from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
+
+
+from .utils import generate_random_username
 
 
 class MyUserManager(BaseUserManager):
@@ -19,7 +24,6 @@ class MyUserManager(BaseUserManager):
         user = MyUser(email=email, first_name=first_name, last_name=last_name,
                       **extra_fields)
         user.set_password(password)
-        user.full_clean()
         user.save()
         return user
 
@@ -42,7 +46,7 @@ class MyUserManager(BaseUserManager):
         return self._create_user(email, password, first_name, last_name, **extra_fields)
 
 
-class MyUser(AbstractBaseUser, PermissionsMixin):
+class MyUser(AbstractUser):
     email = models.EmailField(
         'email address',
         unique=True,
@@ -51,33 +55,19 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
         }
     )
 
-    is_staff = models.BooleanField(
-        'staff status',
-        default=False,
-        help_text='Designates whether the user can log into this admin site.',
-    )
-
-    is_active = models.BooleanField(
-        'active',
-        default=True,
-        help_text='Designates whether this user should be treated as active. '
-            'Unselect this instead of deleting accounts.',
-    )
-
-    date_joined = models.DateTimeField('date joined', auto_now_add=True)
-    first_name = models.CharField(max_length=30, null=False, blank=False)
-    last_name = models.CharField(max_length=30, null=False, blank=False)
-
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
 
     objects = MyUserManager()
 
-    def get_full_name(self):
-        return ' '.join([self.first_name, self.last_name])
+    def save(self, *args, **kwargs):
+        self.username = generate_random_username()
+        self.full_clean()
+        super(MyUser, self).save(*args, **kwargs)
+        if self._password is not None:
+            password_validation.password_changed(self._password, self)
+            self._password = None
 
-    def get_short_name(self):
-        return self.first_name
 
 
 class Profile(models.Model):
