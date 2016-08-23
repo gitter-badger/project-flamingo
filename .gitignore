@@ -134,3 +134,4 @@ crashlytics.properties
 crashlytics-build.properties
 flamingo/db.sqlite3
 flamingo/db.sqlite3
+.idea/workspace.xml
