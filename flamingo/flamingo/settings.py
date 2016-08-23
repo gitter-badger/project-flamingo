@@ -28,7 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
-# AUTH_USER_MODEL = 'profiles.Profile'
+AUTH_USER_MODEL = 'profiles.MyUser'
+AUTH_POST_MODEL = 'posts.Post'
 
 INSTALLED_APPS = [
     'posts.apps.PostsConfig',
