@@ -8,7 +8,7 @@ MyUser = get_user_model()
 class TestPosts(TestCase):
 
     def setUp(self):
-        self.u = MyUser(5, first_name="Simo")
+        self.u = MyUser(5, email='test@gmail.com', password='testpass',first_name="Simo")
         self.u.save()
         self.p1 = Post(posted_by=self.u, content="Working out! #gym #flex")
         self.p1.save()
@@ -40,8 +40,14 @@ class TestPosts(TestCase):
         self.p2.delete()
         self.assertEqual(len(self.gym_tag.posts.all()), 1)
 
-    def test_tag_is_deleted_when_all_references_are_deleted(self):
-        self.p1.delete()
-        self.p2.delete()
-        print self.gym_tag.posts.all()
-        self.assertIsNone(self.gym_tag)
+    def test_adding_tags_when_post_is_updated(self):
+        self.p2.content += " #bonushastag"
+        self.p2.save()
+        self.new_tag = Tag.objects.get(tag="#bonushastag")
+        self.assertIn(self.p2, self.new_tag.posts.all())
+
+    def test_delete_reference_when_tag_deleted_in_post_update(self):
+        self.p2.content = self.p2.content.replace("#secondday", '')
+        self.p2.save()
+        self.removed_tag = Tag.objects.get(tag="#secondday")
+        self.assertNotIn(self.p2, self.removed_tag.posts.all())
