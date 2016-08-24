@@ -13,10 +13,9 @@ def create_tags(sender, instance, created, **kwargs):
         # Adding the new tags
         obj, created = models.Tag.objects.get_or_create(tag=t)
         obj.posts.add(instance)
-
-        old_refs = old_refs.exclude(tag=t)
         obj.save()
 
+    old_refs = old_refs.exclude(tag__in=hash_tags)
     for old in old_refs:
         old.posts.remove(instance)
         old.save()
