@@ -48,6 +48,14 @@ class TestPosts(TestCase):
 
     def test_delete_reference_when_tag_deleted_in_post_update(self):
         self.p2.content = self.p2.content.replace("#secondday", '')
+        print "TEST SAVE"
         self.p2.save()
         self.removed_tag = Tag.objects.get(tag="#secondday")
         self.assertNotIn(self.p2, self.removed_tag.posts.all())
+    #
+    # def test_choice(self):
+    #     print "GYM POSTS", self.gym_tag.posts.filter()
+    #     print "POST ID: ", self.p2.id
+    #
+    # def test_all_tags_that_point_to_p2(self):
+    #     print "Tags pointing to p2: {}".format(Tag.objects.filter(posts__id=self.p2.id))
