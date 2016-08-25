@@ -69,7 +69,6 @@ class MyUser(AbstractUser):
             self._password = None
 
 
-
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, primary_key=True)
     birthdate = models.DateField(blank=True, null=True)
