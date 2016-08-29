@@ -43,4 +43,4 @@ def sign_up(request):
         context = {
             'title': "Welcome!"
         }
-    return render(request, 'home/login.html', context)
+    return render(request, 'home/signup.html', context)
