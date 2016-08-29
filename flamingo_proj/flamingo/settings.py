@@ -32,6 +32,7 @@ AUTH_USER_MODEL = 'profiles.MyUser'
 AUTH_POST_MODEL = 'posts.Post'
 
 INSTALLED_APPS = [
+    'home.apps.HomeConfig',
     'posts.apps.PostsConfig',
     'profiles.apps.ProfilesConfig',
     'django.contrib.admin',
@@ -86,8 +87,6 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
-
-AUTH_USER_MODEL = 'profiles.MyUser'
 
 AUTH_PASSWORD_VALIDATORS = [
     {

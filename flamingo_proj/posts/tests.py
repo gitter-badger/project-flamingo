@@ -2,6 +2,7 @@ from django.test import TestCase
 from .models import Post, Tag
 from django.contrib.auth import get_user_model
 
+
 MyUser = get_user_model()
 
 
@@ -52,3 +53,6 @@ class TestPosts(TestCase):
         self.removed_tag = Tag.objects.get(tag="#secondday")
         self.assertNotIn(self.p2, self.removed_tag.posts.all())
 
+    # def test_sys_path(self):
+    #     import sys
+    #     print sys.path
