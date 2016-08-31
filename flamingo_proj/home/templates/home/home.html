@@ -1,0 +1,5 @@
+{% block headline %} <h1>Welcome to Flamingo!</h1> {% endblock headline %}
+
+{% block content %}
+<p> Hey {% if user.is_authenticated %} {{ user.email }} {% endif %}! </p>
+{% endblock %}
