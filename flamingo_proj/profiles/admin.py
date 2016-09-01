@@ -16,7 +16,7 @@ class MyUserAdmin(UserAdmin):
                 'fields': ('email', 'password1', 'password2')}),
         ('Personal info', {'fields': ('first_name', 'last_name')}),
     )
-    search_fields = ('email',)
+    search_fields = ('email', 'first_name', 'last_name')
     filter_horizontal = ()
 
 
