@@ -1,9 +1,15 @@
 {% block headline %} <h1>Welcome to Flamingo!</h1> {% endblock headline %}
 
 {% block content %}
-<p> Hey {% if user.is_authenticated %} {{ user.email }} {% endif %}! </p>
 
-<p><a href="{% url 'login' %}"> Log in </a></p>
-<p><a href="{% url 'signup' %}"> Sign up </a></p>
+<p> Hey 
+{% if user.is_authenticated %} 
+{{ user.email }}!
+  <p><a href="{% url 'logout' %}"> Log out </a></p> 
+</p>
+{% else %}
+  <p><a href="{% url 'login' %}"> Log in </a></p>
+  <p><a href="{% url 'signup' %}"> Sign up </a></p>
+{% endif %}
 
 {% endblock %}

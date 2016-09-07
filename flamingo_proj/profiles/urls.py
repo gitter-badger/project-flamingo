@@ -6,6 +6,6 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^login/$', auth_views.login),
+    url(r'^profile/$', views.CurrentProfile.as_view(), name='current-profile'),
     url(r'^profile/(?P<pk>[0-9]+)/$', views.ProfileView.as_view(), name='profile'),
 ]

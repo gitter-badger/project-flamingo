@@ -3,15 +3,22 @@
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
-
 {% if next %}
     {% if user.is_authenticated %}
+    <strong> TO BE FIXED </strong>
     <p>Your account doesn't have access to this page. To proceed,
     please login with an account that has access.</p>
     {% else %}
     <p>Please login to see this page.</p>
     {% endif %}
 {% endif %}
+
+{% if user.is_authenticated %}
+    <p> You are logged in, {{ user }}! </p>
+    <p> To log in with a different account, log out first! </p>
+    <p><a href="{% url 'logout' %}">Log out</a></p>
+{% else %}
+
 
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
@@ -33,5 +40,7 @@
 {# Assumes you setup the password_reset view in your URLconf #}
 <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
 
+
+{% endif %}
 {% endblock %}
 
