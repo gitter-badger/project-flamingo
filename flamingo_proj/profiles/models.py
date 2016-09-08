@@ -8,6 +8,7 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
 
 
 from .utils import generate_random_username
@@ -78,6 +79,18 @@ class Profile(models.Model):
         default=0.0,
         validators=[MinValueValidator(0.0), MaxValueValidator(5.0)]
     )
+
+
+    def clean_fields(self, exclude=None):
+        if self.rating < 0 or self.rating > 5.0:
+            raise ValidationError('Invalid rating value')
+        if self in self.follows.all():
+            raise ValidationError('User cannot follow self')
+        super(Profile, self).clean_fields()
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super(Profile, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.user.get_full_name()
