@@ -6,7 +6,7 @@ from models import Profile
 
 
 class ProfileView(LoginRequiredMixin, generic.DetailView):
-    model =  Profile
+    model = Profile
     template_name = 'profiles/profile.html'
 
     def get_context_data(self, **kwargs):

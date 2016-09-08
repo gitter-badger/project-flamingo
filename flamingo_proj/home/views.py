@@ -8,6 +8,7 @@ from .forms import SignUpForm
 
 class HomePageView(generic.TemplateView):
     template_name = 'home/home.html'
+    # template_name = 'registration/login.html'
 
 
 @csrf_protect

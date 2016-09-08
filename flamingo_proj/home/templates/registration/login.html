@@ -13,6 +13,11 @@
     {% endif %}
 {% endif %}
 
+{% if user.is_authenticated %}
+You are already logged in
+<p><a href="{% url 'logout' %}">Log out</a></p>
+
+{% else %}
 <form method="post" action="{% url 'login' %}">
 {% csrf_token %}
 <table>
@@ -26,12 +31,16 @@
 </tr>
 </table>
 
-<input type="submit" value="login" />
+<input type="submit" value="login"/>
 <input type="hidden" name="next" value="{{ next }}" />
+    This is the next: {{ next }}
 </form>
+
+
 
 {# Assumes you setup the password_reset view in your URLconf #}
 <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
 
+{% endif %}
 {% endblock %}
 
