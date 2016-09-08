@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flamingo Feed</title>
+
+    <script type="text/javascript">
+    function like_dislike(el)
+    {
+        if ( el.value === "Like" )
+            el.value = "Dislike";
+        else
+            el.value = "Like";
+    }
+    </script>
+
+</head>
+
+<body>
+<h1> You are at the feed page! </h1>
+<p> You are now logged in as {{ user_name }} </p>
+<h2> Posts by people you are following: </h2>
+{% for followed_post in posts_by_followed %}
+    <li>{{ followed_post.content }}
+        <input onClick="return like_dislike(this)" type="button" value="Like" id="like_button{{ forloop.counter }}"/>
+    </li>
+{% endfor %}
+
+</body>
+</html>

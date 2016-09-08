@@ -7,6 +7,7 @@ from .forms import SignUpForm
 
 
 class HomePageView(generic.TemplateView):
+
     template_name = 'home/home.html'
     # template_name = 'registration/login.html'
 
@@ -22,4 +23,3 @@ def sign_up(request):
     else:
         form = SignUpForm()
     return render(request, 'home/signup.html', {'form': form, 'registered': registered})
-
