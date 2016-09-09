@@ -11,6 +11,8 @@ class TestPosts(TestCase):
     def setUp(self):
         self.u = MyUser(5, email='test@gmail.com', password='testpass', first_name="Simo")
         self.u.save()
+        self.u2 = MyUser(5, email='test2@gmail.com', password='testpass', first_name="Simo2")
+        self.u2.save()
         self.p1 = Post(posted_by=self.u, content="Working out! #gym #flex")
         self.p1.save()
         self.p2 = Post(posted_by=self.u, content="Day two! #gym #secondday")
@@ -52,3 +54,9 @@ class TestPosts(TestCase):
         self.p2.save()
         self.removed_tag = Tag.objects.get(tag="#secondday")
         self.assertNotIn(self.p2, self.removed_tag.posts.all())
+
+    def test_feed(self):
+        self.u.profile.follows.add(self.u2)
+        self.u.save()
+        self.p3 = Post(posted_by=self.u2, content="Followed user post")
+        self.p3.save()

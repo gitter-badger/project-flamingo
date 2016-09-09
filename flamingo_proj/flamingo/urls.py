@@ -19,7 +19,6 @@ from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
-    url(r'^login/$', auth_views.login, {'extra_context': {'next': '/profile/'}}, name='login'),
     url(r'^', include('django.contrib.auth.urls')),
     url(r'^', include('home.urls')),
     url(r'^', include('profiles.urls')),

@@ -80,7 +80,6 @@ class Profile(models.Model):
         validators=[MinValueValidator(0.0), MaxValueValidator(5.0)]
     )
 
-
     def clean_fields(self, exclude=None):
         if self.rating < 0 or self.rating > 5.0:
             raise ValidationError('Invalid rating value')
