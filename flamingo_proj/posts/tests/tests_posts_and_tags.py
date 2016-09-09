@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from posts.models import Post, Tag
 from django.contrib.auth import get_user_model
 
-from django.urls import reverse
+
 MyUser = get_user_model()
 
 
@@ -54,27 +54,3 @@ class TestPosts(TestCase):
         self.p2.save()
         self.removed_tag = Tag.objects.get(tag="#secondday")
         self.assertNotIn(self.p2, self.removed_tag.posts.all())
-
-
-class TestResponding(TestCase):
-    client = Client()
-
-    def setUp(self):
-        self.u = MyUser.objects.create_user(username='dasde',
-                                            email='test@gmail.com',
-                                            first_name="Simo", last_name='Rolev')
-        self.u.set_password('testpass')
-        self.u.save()
-
-    def test_home_is_responding(self):
-        response = self.client.get(reverse('home'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_feed_redirects_to_login_if_you_are_not_logged(self):
-        response = self.client.get(reverse('feed'))
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/login/?next=/feed/')
-
-    def test_valid_login(self):
-        login = self.client.login(email=self.u.email, password='testpass')
-        self.assertTrue(login)
