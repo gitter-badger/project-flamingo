@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from .models import Post, Tag
+from posts.models import Post, Tag
 from django.contrib.auth import get_user_model
 
 from django.urls import reverse
@@ -76,7 +76,5 @@ class TestResponding(TestCase):
         self.assertEqual(response.url, '/login/?next=/feed/')
 
     def test_valid_login(self):
-        print self.u.email
-        print self.u.password
         login = self.client.login(email=self.u.email, password='testpass')
         self.assertTrue(login)
