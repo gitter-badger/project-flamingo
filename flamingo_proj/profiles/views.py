@@ -14,7 +14,7 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
         return context
 
 
-class CurrentProfile(generic.base.RedirectView):
+class GoToProfile(generic.base.RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         kwargs['pk'] = self.request.user.id
