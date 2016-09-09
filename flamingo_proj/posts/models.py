@@ -23,7 +23,7 @@ class Post(TimeStampedModel):
         return re.findall(r'#[a-zA-Z0-9]+', self.content)
 
     def __str__(self):
-        return "By {}, posted on {}".format(self.posted_by.get_full_name(), self.created)
+        return "Post by {}, posted on {}".format(self.posted_by.get_full_name(), self.created)
 
 
 @python_2_unicode_compatible
@@ -33,3 +33,12 @@ class Tag(models.Model):
 
     def __str__(self):
         return "Tag {}".format(self.tag)
+
+
+@python_2_unicode_compatible
+class Like(models.Model):
+    liked_by = models.ForeignKey(settings.AUTH_USER_MODEL)
+    post = models.ForeignKey(Post)
+
+    def __str__(self):
+        return "{} likes {}".format(self.liked_by, self.post)
