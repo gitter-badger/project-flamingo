@@ -19,5 +19,5 @@ class GoToProfile(generic.base.RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         kwargs['pk'] = self.request.user.id
         self.url = '/profile/{}/'.format(kwargs['pk'])
-        return super(CurrentProfile, self).get_redirect_url(*args, **kwargs)
+        return super(GoToProfile, self).get_redirect_url(*args, **kwargs)
 
