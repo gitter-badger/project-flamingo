@@ -1,8 +1,8 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from .models import Post, Tag
 from django.contrib.auth import get_user_model
 
-
+from django.urls import reverse
 MyUser = get_user_model()
 
 
@@ -11,7 +11,7 @@ class TestPosts(TestCase):
     def setUp(self):
         self.u = MyUser(5, email='test@gmail.com', password='testpass', first_name="Simo")
         self.u.save()
-        self.u2 = MyUser(5, email='test2@gmail.com', password='testpass', first_name="Simo2")
+        self.u2 = MyUser(6, email='test2@gmail.com', password='testpass', first_name="Simo2")
         self.u2.save()
         self.p1 = Post(posted_by=self.u, content="Working out! #gym #flex")
         self.p1.save()
@@ -55,8 +55,28 @@ class TestPosts(TestCase):
         self.removed_tag = Tag.objects.get(tag="#secondday")
         self.assertNotIn(self.p2, self.removed_tag.posts.all())
 
-    def test_feed(self):
-        self.u.profile.follows.add(self.u2)
+
+class TestResponding(TestCase):
+    client = Client()
+
+    def setUp(self):
+        self.u = MyUser.objects.create_user(username='dasde',
+                                            email='test@gmail.com',
+                                            first_name="Simo", last_name='Rolev')
+        self.u.set_password('testpass')
         self.u.save()
-        self.p3 = Post(posted_by=self.u2, content="Followed user post")
-        self.p3.save()
+
+    def test_home_is_responding(self):
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_feed_redirects_to_login_if_you_are_not_logged(self):
+        response = self.client.get(reverse('feed'))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/login/?next=/feed/')
+
+    def test_valid_login(self):
+        print self.u.email
+        print self.u.password
+        login = self.client.login(email=self.u.email, password='testpass')
+        self.assertTrue(login)
