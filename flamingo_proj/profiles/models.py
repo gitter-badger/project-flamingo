@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-from datetime import datetime
+from datetime import date
 
 
 from django.db import models
@@ -97,7 +97,7 @@ class Profile(models.Model):
 
     @property
     def age(self):
-        today = datetime.date.today()
+        today = date.today()
         age = (today.year - self.birthdate.year) - \
             int((today.month, today.day) <
                 (self.birthdate.month, self.birthdate.day))
