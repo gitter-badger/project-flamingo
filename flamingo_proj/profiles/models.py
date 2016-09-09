@@ -81,7 +81,7 @@ class Profile(models.Model):
     )
 
     def clean_fields(self, exclude=None):
-        if self.rating < 0 or self.rating > 5.0:
+        if self.rating < 0.0 or self.rating > 5.0:
             raise ValidationError('Invalid rating value')
         if self in self.follows.all():
             raise ValidationError('User cannot follow self')
