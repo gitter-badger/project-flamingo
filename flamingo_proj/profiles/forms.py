@@ -28,11 +28,11 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ('user', 'birthdate', 'rating', 'follows')
 
-    def clean_follows(self):
-        user = self.cleaned_data['user']
-        following = self.cleaned_data['follows']
-        following = [f.user_id for f in following]
+
+    def clean(self):
+        cleaned_data = super(ProfileForm, self).clean()
+        user = cleaned_data['user']
+        following = [profile.user_id for profile in cleaned_data['follows']]
         if user.id in following:
             raise forms.ValidationError("User cannot follow self.")
-        return self.cleaned_data['follows']
-
+        return cleaned_data
