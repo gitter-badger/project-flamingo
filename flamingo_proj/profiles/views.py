@@ -1,6 +1,6 @@
 from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.shortcuts import get_object_or_404
 
 from models import Profile
 
@@ -20,4 +20,3 @@ class GoToProfile(generic.base.RedirectView):
         kwargs['pk'] = self.request.user.id
         self.url = '/profile/{}/'.format(kwargs['pk'])
         return super(GoToProfile, self).get_redirect_url(*args, **kwargs)
-

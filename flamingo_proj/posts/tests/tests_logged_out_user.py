@@ -20,7 +20,7 @@ class TestLoggedOutUser(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_feed_redirects_to_login_if_you_are_not_logged(self):
-        response = self.client.get(reverse('feed'))
+        response = self.client.get(reverse('posts:feed'))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, '/login/?next=/feed/')
 
@@ -29,6 +29,6 @@ class TestLoggedOutUser(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_profiles_redirect_on_try_to_access(self):
-        response = self.client.get(reverse('profile', args=[1]))
+        response = self.client.get(reverse('profiles:profile', args=[1]))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, '/login/?next=/profile/1/')

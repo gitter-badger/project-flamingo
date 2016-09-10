@@ -18,7 +18,7 @@ class TestLoggedInUser(TestCase):
 
     def test_valid_login(self):
         self.assertTrue(self.login)
-        response = self.client.get(reverse('profile', args=[1]))
+        response = self.client.get(reverse('profiles:profile', args=[1]))
         self.assertEqual(response.status_code, 200)
 
     def test_invalid_login(self):

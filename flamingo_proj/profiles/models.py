@@ -10,9 +10,9 @@ from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 
-
 from .utils import generate_random_username
 
+from django.urls import reverse
 
 class MyUserManager(BaseUserManager):
     use_in_migrations = True
@@ -68,6 +68,9 @@ class MyUser(AbstractUser):
         if self._password is not None:
             password_validation.password_changed(self._password, self)
             self._password = None
+
+    def get_absolute_url(self):
+        return reverse('profiles:profile', kwargs={'pk': self.id})
 
 
 class Profile(models.Model):
