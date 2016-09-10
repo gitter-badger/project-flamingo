@@ -12,25 +12,25 @@ class ProfileDetailTest(TestCase):
 
     def test_detail_view_with_existing_profile(self):
         self.client.force_login(self.joker)
-        url = reverse('profile', args=(self.joker.id,))
+        url = reverse('profiles:profile', args=(self.joker.id,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         harley = get_user_model().objects.create_user(email='harley@dc.com',
                                                           first_name='Harley',
                                                           last_name='Quinn')
-        url = reverse('profile', args=(harley.id,))
+        url = reverse('profiles:profile', args=(harley.id,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
 
     def test_detail_view_with_non_existing_profile(self):
         self.client.force_login(self.joker)
-        url = reverse('profile', args=(101,))
+        url = reverse('profiles:profile', args=(101,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
     def test_detail_view_anonymous_user(self):
-        url = reverse('profile', args=(self.joker.id,))
+        url = reverse('profiles:profile', args=(self.joker.id,))
         response = self.client.get(url)
         expected_url = '/login/?next=/profile/{}/'.format(self.joker.id)
         self.assertRedirects(response, expected_url)
@@ -43,13 +43,13 @@ class GoToProfileTest(TestCase):
                                                           first_name='Mister',
                                                           last_name='J')
         self.client.force_login(self.joker)
-        url = reverse('go-to-profile')
+        url = reverse('profiles:go-to-profile')
         response = self.client.get(url)
-        expected_url = reverse('profile', args=(self.joker.id,))
+        expected_url = reverse('profiles:profile', args=(self.joker.id,))
         self.assertRedirects(response, expected_url)
 
     def test_profile_view_anonymous_user(self):
-        url = reverse('go-to-profile')
+        url = reverse('profiles:go-to-profile')
         response = self.client.get(url)
         expected_url = '/login/?next=/profile/'
         self.assertRedirects(response, expected_url)
