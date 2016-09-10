@@ -5,8 +5,8 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 
 
-from .forms import ProfileForm
-from .models import Profile
+from profiles.forms import ProfileForm
+from profiles.models import Profile
 
 
 class ProfileFormTestCase(TestCase):

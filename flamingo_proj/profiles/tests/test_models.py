@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 
 
-from .models import Profile
+from profiles.models import Profile
 
 
 MyUser = get_user_model()

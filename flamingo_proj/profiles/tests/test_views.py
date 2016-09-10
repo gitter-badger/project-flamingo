@@ -3,8 +3,8 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 
 
-from .views import ProfileView
-from .models import Profile
+from profiles.views import ProfileView
+from profiles.models import Profile
 
 
 class ProfileDetailTest(TestCase):
