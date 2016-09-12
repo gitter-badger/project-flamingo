@@ -1,15 +1,29 @@
 from django.shortcuts import render
-from django.views import generic
 from django.views.decorators.csrf import csrf_protect
 
-
 from .forms import SignUpForm
+from posts.models import Post
 
 
-class HomePageView(generic.TemplateView):
+# class HomePageView(generic.TemplateView):
+#
+#     template_name = 'home/home.html'
 
-    template_name = 'home/home.html'
-    # template_name = 'registration/login.html'
+
+def home(request):
+    logged_user = request.user
+    if request.user.is_authenticated():
+        context = {
+            'user_name': logged_user.get_full_name(),
+            'own_posts': Post.objects.filter(posted_by=logged_user.id),
+            'posts_by_followed': Post.objects.filter(
+                posted_by__in=[fol.user.id
+                               for fol in logged_user.profile.follows.all()
+                               ])
+        }
+        return render(request, 'home/feed.html', context)
+    else:
+        return render(request, 'home/home.html', {})
 
 
 @csrf_protect

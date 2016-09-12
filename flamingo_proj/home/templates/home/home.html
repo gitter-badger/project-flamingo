@@ -2,15 +2,8 @@
 
 {% block content %}
 
-<p> Hey
-{% if user.is_authenticated %}
-{{ user.email }}!
-  <p><a href="{% url 'logout' %}"> Log out </a></p>
-
-</p>
-{% else %}
+Hey
   <p><a href="{% url 'login' %}"> Log in </a></p>
   <p><a href="{% url 'signup' %}"> Sign up </a></p>
-{% endif %}
 
 {% endblock %}

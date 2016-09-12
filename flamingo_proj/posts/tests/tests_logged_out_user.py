@@ -19,11 +19,6 @@ class TestLoggedOutUser(TestCase):
         response = self.client.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
 
-    def test_feed_redirects_to_login_if_you_are_not_logged(self):
-        response = self.client.get(reverse('posts:feed'))
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/login/?next=/feed/')
-
     def test_signup_is_responding(self):
         response = self.client.get(reverse('signup'))
         self.assertEqual(response.status_code, 200)
