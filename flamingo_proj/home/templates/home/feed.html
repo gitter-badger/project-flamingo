@@ -22,6 +22,7 @@
 <h2> Posts by people you are following: </h2>
 {% for followed_post in posts_by_followed %}
     <div>
+        <hr>
         <a href="{{ followed_post.posted_by.get_absolute_url }}">{{ followed_post.posted_by.get_full_name }}</a> <br>
         {{ followed_post.content }} <br>
         <small>{{ followed_post.created }} </small>

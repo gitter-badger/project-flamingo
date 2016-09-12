@@ -5,21 +5,15 @@ from .forms import SignUpForm
 from posts.models import Post
 
 
-# class HomePageView(generic.TemplateView):
-#
-#     template_name = 'home/home.html'
-
-
 def home(request):
     logged_user = request.user
     if request.user.is_authenticated():
         context = {
             'user_name': logged_user.get_full_name(),
-            'own_posts': Post.objects.filter(posted_by=logged_user.id),
             'posts_by_followed': Post.objects.filter(
                 posted_by__in=[fol.user.id
                                for fol in logged_user.profile.follows.all()
-                               ])
+                               ]).order_by('-created')
         }
         return render(request, 'home/feed.html', context)
     else:

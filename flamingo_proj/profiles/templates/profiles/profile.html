@@ -1,16 +1,38 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>User Profile</title>
+      <meta charset="UTF-8">
+      <title> Flamingo - {{ user_name }}</title>
+
+      <script type="text/javascript">
+      function like_dislike(el)
+      {
+          if ( el.value === "Like" )
+              el.value = "Dislike";
+          else
+              el.value = "Like";
+      }
+      </script>
+
   </head>
 
   <body>
-    <h1>User profile</h1>
-    {% if user.id == object.user_id %} <h2> Me </h2> 
-    {% else %} <strong> {{ object.user.first_name }} {{ object.user.last_name }} </strong>
+    {% if user.id == object.user_id %} <h1> Me </h1>
+    {% else %} <h1> {{ user_name }} </h1>
     {% endif %}
 
     <p> Birthdate: {{ object.birthdate }} <br> Rating: {{ object.rating }} </p>
+
+    <h2> My posts: </h2>
+    {% for post in own_posts %}
+        <div>
+            <hr>
+            <a href="{{ post.posted_by.get_absolute_url }}">{{ post.posted_by.get_full_name }}</a> <br>
+            {{ post.content }} <br>
+            <small>{{ post.created }} </small>
+            <input onClick="return like_dislike(this)" type="button" value="Like" id="like_button{{ forloop.counter }}"/>
+        </div>
+    {% endfor %}
 
   </body>
 </html>
