@@ -17,7 +17,7 @@ class TimeStampedModel(models.Model):
 @python_2_unicode_compatible
 class Post(TimeStampedModel):
     posted_by = models.ForeignKey(settings.AUTH_USER_MODEL)
-    content = models.TextField(max_length=1000)
+    content = models.TextField(max_length=1000, editable=True)
 
     def get_hash_tags(self):
         return re.findall(r'#[a-zA-Z0-9]+', self.content)
