@@ -11,10 +11,6 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ProfileView, self).get_context_data(**kwargs)
-        context['logged_user'] = self.request.user
-        context['user_name'] = context['logged_user'].get_full_name()
-        context['own_posts'] = Post.objects.filter(
-            posted_by=context['logged_user'].id).order_by('-created')
         return context
 
 

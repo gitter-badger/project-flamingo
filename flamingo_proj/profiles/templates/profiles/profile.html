@@ -2,7 +2,7 @@
 <html>
   <head>
       <meta charset="UTF-8">
-      <title> Flamingo - {{ user_name }}</title>
+      <title> Flamingo - {{ object }}</title>
 
       <script type="text/javascript">
       function like_dislike(el)
@@ -18,13 +18,13 @@
 
   <body>
     {% if user.id == object.user_id %} <h1> Me </h1>
-    {% else %} <h1> {{ user_name }} </h1>
+    {% else %} <h1> {{ object }} </h1>
     {% endif %}
 
     <p> Birthdate: {{ object.birthdate }} <br> Rating: {{ object.rating }} </p>
 
-    <h2> My posts: </h2>
-    {% for post in own_posts %}
+    <h2> {{ object }}'s posts: </h2>
+    {% for post in object.user.post_set.all %}
         <div>
             <hr>
             <a href="{{ post.posted_by.get_absolute_url }}">{{ post.posted_by.get_full_name }}</a> <br>

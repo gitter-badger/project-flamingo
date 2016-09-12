@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 
 from .forms import PostForm
+from .models import Tag
 
 
 def create_post(request):
@@ -20,3 +21,12 @@ def create_post(request):
 @require_POST
 def like(request):
     pass
+
+
+@login_required
+def posts_by_tag(request, tag):
+    context = {
+        "tag": tag,
+        "posts_containing_tag": Tag.objects.get(tag='#' + tag).posts.all()
+    }
+    return render(request, 'posts/tag.html', context)
