@@ -38,8 +38,8 @@ class GoToProfile(LoginRequiredMixin, generic.base.RedirectView):
 def search_users(request):
     query_string = ''
     found_users = None
-    if('q' in request.GET) and request.GET['q'].strip():
-        query_string = request.GET['q']
+    if('q' in request.GET) and request.GET.get('q').strip():
+        query_string = request.GET.get('q')
         user_query = get_query(query_string, ['first_name', 'last_name', ])
         found_users = MyUser.objects.filter(user_query)
     return render(request, 'profiles/search.html',
