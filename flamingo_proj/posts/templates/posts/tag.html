@@ -1,25 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Flamingo - Posts with {{ tag }}</title>
-</head>
-<body>
+{% extends "posts/base.html" %}
 
-{% if not posts_containing_tag %}
-<h1>No posts with the tag {{ tag }}</h1>
-{% else %}
-
-{% for post in posts_containing_tag %}
-    <div>
-        <hr>
-        <a href="{{ post.posted_by.get_absolute_url }}">{{ post.posted_by.get_full_name }}</a> <br>
-        {{ post.content|safe|urlize }} <br>
-        <small>{{ post.created }} </small>
-        <input onClick="return like_dislike(this)" type="button" value="Like" id="like_button{{ forloop.counter }}"/>
-    </div>
-{% endfor %}
-{% endif %}
-
-</body>
-</html>
+{% block content %}
+{% include "posts/display_posts_by_tag.html" %}
+{% endblock content %}

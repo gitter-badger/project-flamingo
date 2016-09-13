@@ -1,0 +1,14 @@
+{% if own_posts %}
+<h2> {{ object }}'s posts: </h2>
+{% for post in own_posts %}
+    <div>
+        <hr>
+        <a href="{{ post.posted_by.get_absolute_url }}">{{ post.posted_by.get_full_name }}</a> <br>
+        {{ post.content|safe|urlize }} <br>
+        <small>{{ post.created }} </small>
+        <input onClick="return like_dislike(this)" type="button" value="Like" id="like_button{{ forloop.counter }}"/>
+    </div>
+{% endfor %}
+{% else %}
+<p> This user has not posted anything yet. </p>
+{% endif %}
