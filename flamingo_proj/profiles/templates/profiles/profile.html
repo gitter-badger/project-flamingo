@@ -1,7 +1,7 @@
 {% extends "profiles/base.html" %}
 
 
-{% block head_title %} Flamingo - {{ object }} {% endblock head_title %}
+{% block title %} {{ object }} | {{ block.super }} {% endblock title %}
 {% block content %}
     {% if user.id == object.user_id %} <h1> Me </h1>
     {% else %} <h1> {{ object }} </h1>
