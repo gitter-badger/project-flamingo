@@ -1,0 +1,17 @@
+<form method="get" action="{% url 'profiles:search' %}">
+
+<label for="id_q"> Search: </label>
+  <input type="text" name="q" id="id_q"/>
+  <input type="submit" value="Search"/>
+</form>
+
+{% if search %}
+  <p>You searched for {{ search }} </p>
+    {% if search_results %}
+      {% for user in search_results %}
+        <p> <a href="{% url 'profiles:profile' pk=user.id %}">{{ user.get_full_name }} </a> </p>
+      {% endfor %}
+    {% else %}
+      No results found 
+    {% endif %}
+{% endif %}
