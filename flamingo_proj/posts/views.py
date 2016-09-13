@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from django.contrib import messages
 
 from .forms import PostForm
-from .models import Tag
+from .models import Tag, Post
 
 
 def create_post(request):
@@ -12,9 +14,11 @@ def create_post(request):
         instance = form.save(commit=False)
         instance.posted_by = request.user
         instance.save()
+        messages.success(request, "You posted successfully!")
+        return redirect('profiles:go-to-profile')
     context = {'form': form,
                'posted_by': request.user.id}
-    return render(request, 'posts/create.html', context)
+    return render(request, 'posts/post_form.html', context)
 
 
 @login_required
@@ -27,6 +31,35 @@ def like(request):
 def posts_by_tag(request, tag):
     context = {
         "tag": tag,
-        "posts_containing_tag": Tag.objects.get(tag='#' + tag).posts.all()
+        "posts_containing_tag": Tag.objects.get(tag='#' + tag).posts.order_by('-created')
     }
     return render(request, 'posts/tag.html', context)
+
+
+@login_required
+def post_edit(request, id):
+    instance = get_object_or_404(Post, id=id)
+    if request.user.id == instance.posted_by.id:
+        form = PostForm(request.POST or None, instance=instance)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.save()
+            messages.success(request, "You have successfully edited this post!")
+            return redirect('profiles:go-to-profile')
+        context = {
+            'instance': instance,
+            'form': form
+        }
+        return render(request, 'posts/post_form.html', context)
+    else:
+        raise Http404("You can only edit your own posts!")
+
+
+def post_delete(request, id):
+    instance = get_object_or_404(Post, id=id)
+    if request.user.id == instance.posted_by.id:
+        instance.delete()
+        messages.success(request, "You have successfully deleted this post!")
+        return redirect('profiles:go-to-profile')
+    else:
+        raise Http404("You can only delete your own posts")
