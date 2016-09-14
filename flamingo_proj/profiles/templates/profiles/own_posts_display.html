@@ -1,8 +1,0 @@
-{% if own_posts %}
-  <h2> {{ object }}'s posts: </h2>
-{% for post in own_posts %}
-  {% include 'posts/post.html' %}
-{% endfor %}
-{% else %}
-  <p> This user has not posted anything yet. </p>
-{% endif %}
