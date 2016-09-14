@@ -1,9 +1,10 @@
 from __future__ import unicode_literals
+import re
+
 
 from django.db import models
 from django.conf import settings
 from django.utils.encoding import python_2_unicode_compatible
-import re
 
 
 class TimeStampedModel(models.Model):
@@ -24,6 +25,15 @@ class Post(TimeStampedModel):
 
     def __str__(self):
         return "Post by {}, posted on {}".format(self.posted_by.get_full_name(), self.created)
+
+
+@python_2_unicode_compatible
+class Share(TimeStampedModel):
+    original_post = models.ForeignKey(Post)
+    shared_by = models.ForeignKey(settings.AUTH_USER_MODEL)
+
+    def __str__(self):
+        return "Shared by {}".format(self.shared_by.get_full_name())
 
 
 @python_2_unicode_compatible
