@@ -1,17 +1,8 @@
 {% if own_posts %}
-<h2> {{ object }}'s posts: </h2>
+  <h2> {{ object }}'s posts: </h2>
 {% for post in own_posts %}
-    <div>
-        <hr>
-        <a href="{{ post.posted_by.get_absolute_url }}">{{ post.posted_by.get_full_name }}</a> <br>
-        {{ post.content|safe|urlize }} <br>
-        <small>{{ post.created }} </small>
-        <input onClick="return like_dislike(this)" type="button" value="Like" id="like_button{{post.id}}"/>
-        <div class="like_count"> 
-          <strong> {{ post.like_set.all.count }} people like this </strong>
-        </div>
-    </div>
+  {% include 'posts/post.html' %}
 {% endfor %}
 {% else %}
-<p> This user has not posted anything yet. </p>
+  <p> This user has not posted anything yet. </p>
 {% endif %}

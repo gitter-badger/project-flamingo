@@ -3,11 +3,11 @@
 
 {% block title %} {{ object }} | {{ block.super }} {% endblock title %}
 {% block content %}
-    {% if user.id == object.user_id %} <h1> Me </h1>
-    {% else %} <h1> {{ object }} </h1>
+    {% if user.id == object.user_id %} 
+        <h1> Me </h1>
+    {% else %} 
+        <h1> {{ object }} </h1>
     {% endif %}
-
     <p> Birthdate: {{ object.birthdate }} <br> Rating: {{ object.rating }} </p>
-
     {% include "profiles/own_posts_display.html" %}
 {% endblock content%}

@@ -5,4 +5,3 @@ function like_dislike(el)
   else
     el.value = "Like";
 }
-
