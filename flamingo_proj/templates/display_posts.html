@@ -1,0 +1,14 @@
+{% if posts %}
+{% for post in posts %}
+    <div>
+        <hr>
+        <a href="{{ post.posted_by.get_absolute_url }}">{{ post.posted_by.get_full_name }}</a> <br>
+        {{ post.content|safe|urlize }} <br>
+        <small>{{ post.created }} </small>
+        <input onLoad="return set_like_lables(this, {{ post.id }})" onClick="return like_dislike(this, {{ post.id }})" type="button" value="Like" id="like_button{{ post.id }}" />
+    </div>
+{% endfor %}
+
+{% else %}
+<h1>No posts</h1>
+{% endif %}

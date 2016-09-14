@@ -1,43 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Flamingo Feed</title>
-
-    <script type="text/javascript">
-    function like_dislike(el)
-    {
-        if ( el.value === "Like" ){
-            jQuery.ajax
-            ({
-            type:"POST",
-            data:{'key':key},
-            }).done(function(result){
-
-                          })
-
-            el.value = "Dislike";}
-        else {
-            el.value = "Like";}
-    }
-    </script>
-
-</head>
-
-<body>
+{% extends "base.html" %}
+{% block title %} Flamingo {% endblock title %}
+{% block content %}
 <h1> You are at the feed page! </h1>
 <p> You are now logged in as {{ user_name }} </p>
 <h2> Posts by people you are following: </h2>
-{% for followed_post in posts_by_followed %}
-    <div>
-        <hr>
-        <a href="{{ followed_post.posted_by.get_absolute_url }}">{{ followed_post.posted_by.get_full_name }}</a> <br>
-        {{ followed_post.content }} <br>
-        <small>{{ followed_post.created }} </small>
-        <small> id: {{ followed_post.id }} </small>
-        <input onClick="return like_dislike(this)" type="button" value="Like" id="like_button{{ followed_post.id }}"/>
-    </div>
-{% endfor %}
-
-</body>
-</html>
+{% include "display_posts.html" %}
+{% endblock content %}

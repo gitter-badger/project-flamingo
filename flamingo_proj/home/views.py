@@ -10,7 +10,7 @@ def home(request):
     if request.user.is_authenticated():
         context = {
             'user_name': logged_user.get_full_name(),
-            'posts_by_followed': Post.objects.filter(
+            'posts': Post.objects.filter(
                 posted_by__in=[fol.user.id
                                for fol in logged_user.profile.follows.all()
                                ]).order_by('-created')

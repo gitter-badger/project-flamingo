@@ -1,9 +1,9 @@
-{% block headline %} <h1>Welcome to Flamingo!</h1> {% endblock headline %}
+{% extends "base.html" %}
+
+{% block title %} <h1>Welcome to Flamingo!</h1> {% endblock title %}
 
 {% block content %}
-
 Hey
   <p><a href="{% url 'login' %}"> Log in </a></p>
   <p><a href="{% url 'signup' %}"> Sign up </a></p>
-
 {% endblock %}

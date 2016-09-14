@@ -32,16 +32,17 @@ def like(request, id):
     if not created:
         obj.delete()
         print 'disliking post: ', id
+        return JsonResponse({'liked_by_user': False})
     else:
         print 'liking post', id
-    return JsonResponse({'likes': 5})
+        return JsonResponse({'liked_by_user': True})
 
 
 @login_required
 def posts_by_tag(request, tag):
     context = {
         "tag": tag,
-        "posts_containing_tag": Tag.objects.get(tag='#' + tag).posts.order_by('-created')
+        "posts": Tag.objects.get(tag='#' + tag).posts.order_by('-created')
     }
     return render(request, 'posts/tag.html', context)
 
