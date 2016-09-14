@@ -3,6 +3,8 @@ from datetime import date
 
 
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
+from django.urls import reverse
 from django.contrib.auth import password_validation
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
@@ -10,9 +12,9 @@ from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 
+
 from .utils import generate_random_username
 
-from django.urls import reverse
 
 class MyUserManager(BaseUserManager):
     use_in_migrations = True
@@ -73,6 +75,7 @@ class MyUser(AbstractUser):
         return reverse('profiles:profile', kwargs={'pk': self.id})
 
 
+@python_2_unicode_compatible
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, primary_key=True)
     birthdate = models.DateField(blank=True, null=True)
