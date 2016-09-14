@@ -1,16 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <h1> You are at the feed page! </h1>
 <p> You are now logged in as {{ user_name }} </p>
 <h2> Posts by people you are following: </h2>
-{% for followed_post in posts_by_followed %}
-    <div>
-        <hr>
-        <a href="{{ followed_post.posted_by.get_absolute_url }}">{{ followed_post.posted_by.get_full_name }}</a> <br>
-        {{ followed_post.content }} <br>
-        <small>{{ followed_post.created }} </small>
-        <input onClick="return like_dislike(this)" type="button" value="Like" id="like_button{{ forloop.counter }}"/>
-    </div>
-{% endfor %}
+
+{% include "display_posts.html" %}
+
 {% endblock content %}

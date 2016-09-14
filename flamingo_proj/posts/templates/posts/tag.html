@@ -1,5 +1,6 @@
-{% extends "posts/base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
-{% include "posts/display_posts_by_tag.html" %}
+<h1> Posts by tag #{{ tag }} </h1>
+{% include "display_posts.html" %}
 {% endblock content %}
