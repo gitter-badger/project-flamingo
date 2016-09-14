@@ -23,19 +23,28 @@ def create_post(request):
 
 
 @login_required
-@require_POST
 def like(request, id):
-    obj, created = Like.objects.get_or_create(
-        liked_by=request.user,
-        post=Post.objects.get(id=id),
-    )
-    if not created:
-        obj.delete()
-        print 'disliking post: ', id
-        return JsonResponse({'liked_by_user': False})
-    else:
-        print 'liking post', id
-        return JsonResponse({'liked_by_user': True})
+    if request.method == 'GET':
+        try:
+            Like.objects.get(
+                liked_by=request.user,
+                post=Post.objects.get(id=id))
+            return JsonResponse({'liked_by_user': True})
+        except Like.DoesNotExist:
+            return JsonResponse({'liked_by_user': False})
+
+    elif request.method == 'POST':
+        obj, created = Like.objects.get_or_create(
+            liked_by=request.user,
+            post=Post.objects.get(id=id),
+        )
+        if not created:
+            obj.delete()
+            print 'disliking post: ', id
+            return JsonResponse({'liked_by_user': False})
+        else:
+            print 'liking post', id
+            return JsonResponse({'liked_by_user': True})
 
 
 @login_required

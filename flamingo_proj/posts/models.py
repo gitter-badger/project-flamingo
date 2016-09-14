@@ -26,6 +26,9 @@ class Post(TimeStampedModel):
     def __str__(self):
         return "Post by {}, posted on {}".format(self.posted_by.get_full_name(), self.created)
 
+    def is_liked(self):
+        return self.likes.count() > 0
+
 
 @python_2_unicode_compatible
 class Share(TimeStampedModel):
@@ -48,7 +51,7 @@ class Tag(models.Model):
 @python_2_unicode_compatible
 class Like(models.Model):
     liked_by = models.ForeignKey(settings.AUTH_USER_MODEL)
-    post = models.ForeignKey(Post)
+    post = models.ForeignKey(Post, related_name='likes')
 
     def __str__(self):
         return "{} likes {}".format(self.liked_by, self.post)
