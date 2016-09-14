@@ -3,9 +3,10 @@ from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib import messages
+from django.http import JsonResponse
 
 from .forms import PostForm
-from .models import Tag, Post
+from .models import Tag, Post, Like
 
 
 def create_post(request):
@@ -23,8 +24,17 @@ def create_post(request):
 
 @login_required
 @require_POST
-def like(request):
-    pass
+def like(request, id):
+    obj, created = Like.objects.get_or_create(
+        liked_by=request.user,
+        post=Post.objects.get(id=id),
+    )
+    if not created:
+        obj.delete()
+        print 'disliking post: ', id
+    else:
+        print 'liking post', id
+    return JsonResponse({'likes': 5})
 
 
 @login_required

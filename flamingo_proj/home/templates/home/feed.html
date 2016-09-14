@@ -7,10 +7,18 @@
     <script type="text/javascript">
     function like_dislike(el)
     {
-        if ( el.value === "Like" )
-            el.value = "Dislike";
-        else
-            el.value = "Like";
+        if ( el.value === "Like" ){
+            jQuery.ajax
+            ({
+            type:"POST",
+            data:{'key':key},
+            }).done(function(result){
+
+                          })
+
+            el.value = "Dislike";}
+        else {
+            el.value = "Like";}
     }
     </script>
 
@@ -26,7 +34,8 @@
         <a href="{{ followed_post.posted_by.get_absolute_url }}">{{ followed_post.posted_by.get_full_name }}</a> <br>
         {{ followed_post.content }} <br>
         <small>{{ followed_post.created }} </small>
-        <input onClick="return like_dislike(this)" type="button" value="Like" id="like_button{{ forloop.counter }}"/>
+        <small> id: {{ followed_post.id }} </small>
+        <input onClick="return like_dislike(this)" type="button" value="Like" id="like_button{{ followed_post.id }}"/>
     </div>
 {% endfor %}
 

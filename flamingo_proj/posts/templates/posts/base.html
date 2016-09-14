@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,21 +7,14 @@
     <meta charset="UTF-8">
     <title>{% block head_title %} Flamingo Profiles {% endblock head_title %}</title>
     <style> {% block style %}{% endblock style %} </style>
-
-    <script type="text/javascript">
-      function like_dislike(el)
-      {
-          if ( el.value === "Like" )
-              el.value = "Dislike";
-          else
-              el.value = "Like";
-      }
-     </script>
 </head>
 <body>
     {% include "profiles/messages_display.html" %}
     <div class="container">
     {% block content %}{% endblock content %}
     </div>
+
+    <script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+    <script language="javascript" type="text/javascript" src="{% static "js/base.js" %}"></script>
 </body>
 </html>
