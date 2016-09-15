@@ -1,11 +1,20 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.views import generic
+from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.contrib import messages
 from django.http import JsonResponse
 
+
 from .forms import PostForm
 from .models import Tag, Post, Like
+
+
+class PostView(LoginRequiredMixin, generic.DetailView):
+    model = Post
+    template_name = 'posts/post_detail.html'
 
 
 def create_post(request):
@@ -39,10 +48,8 @@ def like(request, id):
         )
         if not created:
             obj.delete()
-            print 'disliking post: ', id
             return JsonResponse({'liked_by_user': False})
         else:
-            print 'liking post', id
             return JsonResponse({'liked_by_user': True})
 
 

@@ -100,6 +100,9 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.get_full_name()
 
+    def get_absolute_url(self):
+        return reverse('profiles:profile', kwargs={'pk': self.user_id})
+
     @property
     def age(self):
         today = date.today()

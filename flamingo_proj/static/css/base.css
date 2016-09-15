@@ -27,7 +27,7 @@ h1 {
 }
 
 h2 { 
-    color: #7c795d; 
+    color: #2b3856; 
     font-family: 'Source Sans Pro', sans-serif; 
     font-size: 28px; 
     font-weight: 400; 
@@ -36,7 +36,7 @@ h2 {
 }
 
 p { 
-    color: #4c4a37; 
+    color: #2b3856; 
     font-family: 'Source Sans Pro', sans-serif; 
     font-size: 18px; 
     line-height: 32px; 
@@ -63,7 +63,7 @@ a {
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #4c4a37; 
+    background-color: #bcc6cc; 
     overflow-x: hidden;
     padding-top: 60px;
     transition: 0.5s;
@@ -73,7 +73,7 @@ a {
     padding: 8px 8px 8px 16px;
     text-decoration: none;
     font-size: 25px;
-    color: #ffffff;
+    color: #2b3856; 
     display: block;
     transition: 0.3s;
 }
