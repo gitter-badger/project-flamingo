@@ -4,6 +4,7 @@ import re
 
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 from django.utils.encoding import python_2_unicode_compatible
 
 
@@ -24,7 +25,10 @@ class Post(TimeStampedModel):
         return re.findall(r'#[a-zA-Z0-9]+', self.content)
 
     def __str__(self):
-        return "Post by {}, posted on {}".format(self.posted_by.get_full_name(), self.created)
+        return "Post by {}, posted on {}".format(self.posted_by.get_full_name(), self.created.date())
+
+    def get_absolute_url(self):
+        return reverse('posts:detail', kwargs={'pk': self.id})
 
     def is_liked(self):
         return self.likes.count() > 0
