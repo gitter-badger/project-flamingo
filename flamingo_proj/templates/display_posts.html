@@ -8,9 +8,13 @@
         <input class='like-button'
                onClick="return like_dislike(this, {{ post.id }})"
                type="button"
-               value="Init"
+               {% if post.liked_by_user %}
+               value="Dislike"
+               {% else %}
+               value = "Like"
+               {% endif %}
                id="like_button{{ post.id }}"
-               post-id="{{ post.id }}" />
+               data-post-id="{{ post.id }}" />
     </div>
 {% endfor %}
 

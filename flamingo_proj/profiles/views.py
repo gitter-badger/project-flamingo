@@ -11,9 +11,10 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
     template_name = 'profiles/profile.html'
 
     def get_context_data(self, **kwargs):
-        context = super(ProfileView, self).get_context_data(**kwargs)
-        context['posts'] = Post.objects.filter(
+        posts = Post.objects.filter(
             posted_by=self.object.user.id).order_by('-created')
+        context = super(ProfileView, self).get_context_data(**kwargs)
+        context['posts'] = Post.add_liked_by_user(posts, self.request.user)
         return context
 
 

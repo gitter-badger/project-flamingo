@@ -22,26 +22,8 @@ $(function () {
             }
         }
     });
-
-    $.each($('.like-button'), function (index, value) {
-        console.log(index + ": " + value.getAttribute("post-id") );
-        set_like_lables(value, value.getAttribute("post-id"));
-    });
-
 });
 
-
-function set_like_lables(el, postId) {
-    console.log("SET METHOD")
-    jQuery.getJSON('/posts/' + postId + '/like/', function(result){
-            console.log(result)
-            if (result.liked_by_user){
-                el.value = "Dislike";
-            } else {
-                el.value = "Like";
-            }
-      });
-}
 
 function like_dislike(el, postId) {
        jQuery.ajax({
