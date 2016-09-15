@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 
 from forms import SignUpForm
 from utils import get_query, get_key
-from posts.models import Post
+from posts.models import Post, Share
 from profiles.models import Profile
 
 
@@ -20,10 +20,14 @@ def home(request):
     if request.user.is_authenticated():
         logged_user = request.user
         posts = Post.objects.filter(posted_by__in=
-                    [fol.user.id for fol in logged_user.profile.follows.all()]).order_by('-created')
+                    [fol.user.id for fol in logged_user.profile.follows.all()])
+        posts = Post.add_liked_by_user(posts, request.user)
+        shares = Share.objects.filter(shared_by__in=
+                    [fol.user.id for fol in logged_user.profile.follows.all()])
+        posts = sorted(chain(posts, shares), key=lambda instance: instance.created)
         context = {
             'user_name': logged_user.get_full_name(),
-            'posts': Post.add_liked_by_user(posts, request.user)
+            'posts': posts,
         }
         return render(request, 'home/feed.html', context)
     else:
@@ -54,7 +58,6 @@ def search(request):
         users  = Profile.objects.filter(user_query)
         posts_query = get_query(query_string, ['tag__tag'], tag=True)
         posts = Post.objects.filter(posts_query)
-        results = list(chain(users, posts))
         results = sorted(chain(users, posts), key=lambda instance: get_key(instance), reverse=True)
     return render(request, 'search.html',
                   context={'search_results': results, 'search': query_string})

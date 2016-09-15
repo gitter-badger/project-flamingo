@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^(?P<id>[0-9]+)/edit/$', views.post_edit, name='edit'),
     url(r'^(?P<id>[0-9]+)/delete/$', views.post_delete, name='delete'),
     url(r'^(?P<id>[0-9]+)/like/$', views.like, name='like'),
+    url(r'^(?P<id>[0-9]+)/share/$', views.post_share, name='share'),
 ]

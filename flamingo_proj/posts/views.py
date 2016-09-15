@@ -9,7 +9,7 @@ from django.http import JsonResponse
 
 
 from .forms import PostForm
-from .models import Tag, Post, Like
+from .models import Tag, Post, Like, Share
 
 
 class PostView(LoginRequiredMixin, generic.DetailView):
@@ -91,3 +91,10 @@ def post_delete(request, id):
         return redirect('profiles:go-to-profile')
     else:
         raise Http404("You can only delete your own posts")
+
+
+def post_share(request, id):
+    instance = get_object_or_404(Post, id=id)
+    Share.objects.create(original_post_id=id, shared_by_id=request.user.id)
+    messages.success(request, "You have successfully shared this post!")
+    return redirect('profiles:go-to-profile')

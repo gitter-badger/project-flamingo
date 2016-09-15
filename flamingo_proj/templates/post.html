@@ -27,6 +27,13 @@
                {% endif %}
                id="like_button{{ post.id }}"
                data-post-id="{{ post.id }}" />
-        
+
+        <input class='share-button'
+               onClick="return post_share(this, {{ post.id }})"
+               type="button"
+               value="Share"
+               id="sharebutton{{ post.id }}"
+               data-post-id="{{ post.id }}" />
+
     </div>
 </div>

@@ -57,3 +57,14 @@ function post_delete(el, postId) {
         })
     }
 }
+
+function post_share(el, postId) {
+  jQuery.ajax({
+    type:"POST",
+    url:'/posts/' + postId + '/share/'
+  }).done(function(result){
+    var shared = $("#post" + postId);
+    console.log("You shared this post: " + shared);
+  })
+}
+
