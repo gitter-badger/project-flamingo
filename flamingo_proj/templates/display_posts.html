@@ -1,21 +1,6 @@
 {% if posts %}
 {% for post in posts %}
-    <div>
-        <hr>
-        <a href="{{ post.posted_by.get_absolute_url }}">{{ post.posted_by.get_full_name }}</a> <br>
-        {{ post.content|safe|urlize }} <br>
-        <small>{{ post.created }} </small>
-        <input class='like-button'
-               onClick="return like_dislike(this, {{ post.id }})"
-               type="button"
-               {% if post.liked_by_user %}
-               value="Dislike"
-               {% else %}
-               value = "Like"
-               {% endif %}
-               id="like_button{{ post.id }}"
-               data-post-id="{{ post.id }}" />
-    </div>
+{% include 'post.html' %}
 {% endfor %}
 
 {% else %}

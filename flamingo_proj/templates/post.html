@@ -1,0 +1,31 @@
+<div class="post" id="post{{ post.id }}">
+    <div>
+        <hr>
+        <a href="{{ post.posted_by.get_absolute_url }}">{{ post.posted_by.get_full_name }}</a>
+        <small>{{ post.created }} </small>
+
+        {% if post.posted_by == request.user %}
+        <input class='delete-button'
+               onClick="return post_delete(this, {{ post.id }})"
+               type="button"
+               value="Delete"
+               id="delete_button{{ post.id }}"
+               data-post-id="{{ post.id }}" />
+        {% endif %}
+        <br>
+
+        {{ post.content|safe|urlize }} <br>
+        <small class = 'like-count'
+               id="like_count{{ post.id }}" > {{ post.likes.count }} people like this </small>
+        <input class='like-button'
+               onClick="return like_dislike(this, {{ post.id }})"
+               type="button"
+               {% if post.liked_by_user %}
+               value="Dislike"
+               {% else %}
+               value = "Like"
+               {% endif %}
+               id="like_button{{ post.id }}"
+               data-post-id="{{ post.id }}" />
+    </div>
+</div>

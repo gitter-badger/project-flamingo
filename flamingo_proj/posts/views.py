@@ -1,7 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.http import JsonResponse
 
@@ -53,7 +52,6 @@ def posts_by_tag(request, tag):
     posts = Post.objects.filter(tag=requested_tag).order_by('-created')
     context = {
         "tag": tag,
-        # "posts": Tag.objects.get(tag='#' + tag).posts.order_by('-created')
         "posts": Post.add_liked_by_user(posts, request.user)
     }
     return render(request, 'posts/tag.html', context)
