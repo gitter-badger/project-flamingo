@@ -4,8 +4,10 @@
 
 <h1> You are at the feed page! </h1>
 <p> You are now logged in as {{ user_name }} </p>
-<h2> Posts by people you are following: </h2>
 
+{% include "create_post_form.html" %}
+
+<h2> Posts by people you are following: </h2>
 {% include "display_posts.html" %}
 
 {% endblock content %}

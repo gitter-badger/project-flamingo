@@ -40,7 +40,6 @@ function like_dislike(el, postId) {
             $("#like_count" + postId).load(location.href + " #like_count" + postId, function() {
                 $(this).children(':first').unwrap();
             });
-            console.log(location.href + "#like_count" + postId);
       });
 }
 
@@ -56,4 +55,16 @@ function post_delete(el, postId) {
                 console.log("You deleted this post: " + toDelete);
         })
     }
+}
+
+
+function submit_post(){
+    jQuery.ajax({
+        type: "POST",
+        url: "/posts/create/",
+        data: $('#content').serialize()
+    }).done(function(result){
+        
+        console.log("You posted: " + result.you_posted);
+    })
 }
