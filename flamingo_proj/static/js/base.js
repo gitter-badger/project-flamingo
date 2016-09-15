@@ -37,5 +37,23 @@ function like_dislike(el, postId) {
                 el.value = "Like";
                 console.log("Likes: " + result.liked_by_user)
             }
+            $("#like_count" + postId).load(location.href + " #like_count" + postId, function() {
+                $(this).children(':first').unwrap();
+            });
+            console.log(location.href + "#like_count" + postId);
       });
+}
+
+
+function post_delete(el, postId) {
+    if (confirm('Are you sure you want to delete this post?')){
+        jQuery.ajax({
+            type:"POST",
+            url:'/posts/' + postId + '/delete/'
+        }).done(function(result){
+                var toDelete = $("#post" + postId);
+                toDelete.remove();
+                console.log("You deleted this post: " + toDelete);
+        })
+    }
 }

@@ -18,13 +18,14 @@ MyUser = get_user_model()
 
 def home(request):
     logged_user = request.user
-    if request.user.is_authenticated():
-        context = {
-            'user_name': logged_user.get_full_name(),
-            'posts': Post.objects.filter(
+    posts = Post.objects.filter(
                 posted_by__in=[fol.user.id
                                for fol in logged_user.profile.follows.all()
                                ]).order_by('-created')
+    if request.user.is_authenticated():
+        context = {
+            'user_name': logged_user.get_full_name(),
+            'posts': Post.add_liked_by_user(posts, request.user)
         }
         return render(request, 'home/feed.html', context)
     else:
