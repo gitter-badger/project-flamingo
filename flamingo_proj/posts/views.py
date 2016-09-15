@@ -55,9 +55,12 @@ def like(request, id):
 
 @login_required
 def posts_by_tag(request, tag):
+    requested_tag = Tag.objects.get(tag='#' + tag)
+    posts = Post.objects.filter(tag=requested_tag).order_by('-created')
     context = {
         "tag": tag,
-        "posts": Tag.objects.get(tag='#' + tag).posts.order_by('-created')
+        # "posts": Tag.objects.get(tag='#' + tag).posts.order_by('-created')
+        "posts": Post.add_liked_by_user(posts, request.user)
     }
     return render(request, 'posts/tag.html', context)
 

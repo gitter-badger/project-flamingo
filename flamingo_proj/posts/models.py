@@ -24,14 +24,21 @@ class Post(TimeStampedModel):
     def get_hash_tags(self):
         return re.findall(r'#[a-zA-Z0-9]+', self.content)
 
+    @staticmethod
+    def add_liked_by_user(set_of_posts, user):
+        for post in set_of_posts:
+            try:
+                Like.objects.get(liked_by=user, post=post)
+                post.liked_by_user = True
+            except Like.DoesNotExist:
+                post.liked_by_user = False
+        return set_of_posts
+
     def __str__(self):
         return "Post by {}, posted on {}".format(self.posted_by.get_full_name(), self.created.date())
 
     def get_absolute_url(self):
         return reverse('posts:detail', kwargs={'pk': self.id})
-
-    def is_liked(self):
-        return self.likes.count() > 0
 
 
 @python_2_unicode_compatible
