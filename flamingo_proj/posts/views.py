@@ -17,18 +17,6 @@ class PostView(LoginRequiredMixin, generic.DetailView):
     template_name = 'posts/post_detail.html'
 
 
-# def create_post(request):
-#     form = PostForm(request.POST or None)
-#     if form.is_valid():
-#         instance = form.save(commit=False)
-#         instance.posted_by = request.user
-#         instance.save()
-#         messages.success(request, "You posted successfully!")
-#         return redirect('profiles:go-to-profile')
-#     context = {'form': form,
-#                'posted_by': request.user.id}
-#     return render(request, 'posts/post_form.html', context)
-
 def create_post(request):
     if request.method == "POST":
         form = PostForm(request.POST or None)
@@ -38,7 +26,8 @@ def create_post(request):
             instance.posted_by = request.user
             instance.save()
             messages.success(request, "You posted successfully!")
-            return JsonResponse({'you_posted': instance.content})
+            return JsonResponse({'you_posted': instance.content,
+                                 'postId': instance.id})
     else:
         messages.error(request, "Something went wrong this your post!")
         return JsonResponse({'you_posted': "Error!"})

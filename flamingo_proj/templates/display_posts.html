@@ -1,7 +1,9 @@
+<div id="posts">
 {% if posts %}
 {% for post in posts %}
 {% include 'post.html' %}
 {% endfor %}
+</div>
 
 {% else %}
 <h1>No posts</h1>
