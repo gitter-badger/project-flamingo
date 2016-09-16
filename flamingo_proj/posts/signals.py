@@ -10,18 +10,24 @@ from django.urls import reverse
 def create_tags(sender, instance, created, **kwargs):
     old_refs = instance.tag_set.all()
     hash_tags = instance.get_hash_tags()
+    split_content = instance.split_by_hashtag()
     for t in hash_tags:
         # Adding the new tags
         obj, created = models.Tag.objects.get_or_create(tag=t)
         obj.posts.add(instance)
         obj.save()
-        this_instance = models.Post.objects.filter(id=instance.id)
         tag_link = reverse('posts:tag', kwargs={'tag': t[1:]})
-        tag_to_url = str(instance.content).replace(
-            t, "<a href={}>{}</a>".format(tag_link, t))
-        this_instance.update(content=tag_to_url)
+        for index, elem in enumerate(split_content):
+            if elem == t:
+                split_content[index] = '<a href="{}">{}</a>'.format(tag_link, t)
+    result_content = ''.join(split_content)
+    print "Result content: ", result_content
+    this_instance = models.Post.objects.filter(id=instance.id)
+    this_instance.update(content=result_content)
 
     old_refs = old_refs.exclude(tag__in=hash_tags)
     for old in old_refs:
         old.posts.remove(instance)
         old.save()
+
+    print instance.content

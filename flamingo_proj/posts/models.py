@@ -21,8 +21,14 @@ class Post(TimeStampedModel):
     posted_by = models.ForeignKey(settings.AUTH_USER_MODEL)
     content = models.TextField(max_length=1000, editable=True)
 
+    # def get_hash_tags(self):
+    #     return re.findall(r'#[a-zA-Z0-9]+$', self.content)
+
     def get_hash_tags(self):
-        return re.findall(r'#[a-zA-Z0-9]+', self.content)
+        return set(re.findall(r'(?<![\w\d])#[a-zA-Z0-9]+(?![\w\d])', self.content))
+
+    def split_by_hashtag(self):
+        return re.split(r'((?<![\w\d])#[a-zA-Z0-9]+(?![\w\d]))', self.content)
 
     @staticmethod
     def add_liked_by_user(set_of_posts, user):
