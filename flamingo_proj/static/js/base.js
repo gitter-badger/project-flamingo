@@ -65,7 +65,7 @@ function post_share(el, postId) {
   }).done(function(result){
     var shared = $("#post" + postId);
     console.log("You shared this post: " + shared);
-  })
+  });
 }
 
 
@@ -75,7 +75,6 @@ function submit_post(){
         url: "/posts/create/",
         data: $('#content').serialize()
     }).done(function(result){
-        
         console.log("You posted: " + result.you_posted);
     })
 }
