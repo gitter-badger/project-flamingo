@@ -40,7 +40,6 @@ function like_dislike(el, postId) {
             $("#like_count" + postId).load(location.href + " #like_count" + postId, function() {
                 $(this).children(':first').unwrap();
             });
-            console.log(location.href + "#like_count" + postId);
       });
 }
 
@@ -58,6 +57,7 @@ function post_delete(el, postId) {
     }
 }
 
+
 function post_share(el, postId) {
   jQuery.ajax({
     type:"POST",
@@ -68,3 +68,14 @@ function post_share(el, postId) {
   })
 }
 
+
+function submit_post(){
+    jQuery.ajax({
+        type: "POST",
+        url: "/posts/create/",
+        data: $('#content').serialize()
+    }).done(function(result){
+        
+        console.log("You posted: " + result.you_posted);
+    })
+}

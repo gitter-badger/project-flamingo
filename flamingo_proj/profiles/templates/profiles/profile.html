@@ -9,5 +9,7 @@
         <h1> {{ object }} </h1>
     {% endif %}
     <p> Birthdate: {{ object.birthdate }} <br> Rating: {{ object.rating }} </p>
+    {% include "create_post_form.html" %}
+    <h2> You posts: </h2>
     {% include "display_posts.html" %}
 {% endblock content%}
