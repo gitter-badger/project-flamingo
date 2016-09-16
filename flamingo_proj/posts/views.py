@@ -67,6 +67,7 @@ def like(request, id):
 def posts_by_tag(request, tag):
     requested_tag = Tag.objects.get(tag='#' + tag)
     posts = Post.objects.filter(tag=requested_tag).order_by('-created')
+    Post.add_shared_property(posts)
     context = {
         "tag": tag,
         "posts": Post.add_liked_by_user(posts, request.user)
@@ -104,8 +105,13 @@ def post_delete(request, id):
 
 
 def post_share(request, id):
-    instance = get_object_or_404(Post, id=id)
-    share = Post.objects.create(posted_by=request.user, content=instance.content)
-    Share.objects.create(original_post_id=id, shared_post_id=share.id)
-    messages.success(request, "You have successfully shared this post!")
-    return redirect('profiles:go-to-profile')
+    if request.method == "POST":
+        instance = get_object_or_404(Post, id=id)
+        share = Post.objects.create(posted_by=request.user, content=instance.content)
+        Share.objects.create(original_post_id=id, shared_post_id=share.id)
+        Post.add_shared_property([share])
+        messages.success(request, "You have successfully shared this post!")
+        return JsonResponse({'postId': share.id})
+    else:
+        messages.error(request, "Something went wrong!")
+        return JsonResponse({'you_posted': "Error!"})

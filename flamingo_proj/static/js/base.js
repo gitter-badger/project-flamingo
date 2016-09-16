@@ -63,8 +63,12 @@ function post_share(el, postId) {
     type:"POST",
     url:'/posts/' + postId + '/share/'
   }).done(function(result){
-    var shared = $("#post" + postId);
-    console.log("You shared this post: " + shared);
+    var $shared_post = $("<div>", {class: "post", id: "post" + result.postId});
+    $("#posts").prepend($shared_post);
+    $shared_post.load(location.href + " #post" + result.postId, function() {
+      $(this).children(':first').unwrap();
+    });
+    console.log($shared_post);
   });
 }
 

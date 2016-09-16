@@ -3,8 +3,9 @@
       <hr>
         {% if post.shared %}
           <strong> Shared by <a href="{{ post.posted_by.get_absolute_url }}">{{ post.posted_by.get_full_name }}</a></strong>
+          <br>
           <strong>
-            <a href="{{ post.share.original_post.get_absolute_url }}"> Original Post</a>
+            <a href="{{ post.shared.original_post.get_absolute_url }}"> Original Post</a>
           </strong>
           <br>
         {% else %}

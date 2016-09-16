@@ -27,10 +27,10 @@ class Post(TimeStampedModel):
     @staticmethod
     def add_shared_property(set_of_posts):
         for post in set_of_posts:
-            if Share.objects.filter(shared_post_id=post.id):
-                post.shared = True
-            else:
-                post.shared = False
+            try:
+                post.shared = Share.objects.get(shared_post_id=post.id)
+            except Share.DoesNotExist:
+                post.shared = None
 
     @staticmethod
     def add_liked_by_user(set_of_posts, user):
@@ -52,7 +52,7 @@ class Post(TimeStampedModel):
 @python_2_unicode_compatible
 class Share(TimeStampedModel):
     original_post = models.ForeignKey(Post, related_name="original")
-    shared_post = models.OneToOneField(Post)
+    shared_post = models.ForeignKey(Post)
 
     def __str__(self):
         return "Shared by {}".format(self.shared_post.posted_by.get_full_name())
