@@ -33,7 +33,8 @@ def create_post(request):
             instance.posted_by = request.user
             instance.save()
             messages.success(request, "You posted successfully!")
-            return JsonResponse({'you_posted': instance.content})
+            return JsonResponse({'you_posted': instance.content,
+                                 'postId': instance.id})
     else:
         messages.error(request, "Something went wrong this your post!")
         return JsonResponse({'you_posted': "Error!"})

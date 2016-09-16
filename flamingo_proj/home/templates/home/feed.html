@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
+
 {% block content %}
+<script type="text/javascript">
+    $(document).ready(function(){
+        auto_refresh();
+    });
+</script>
 
 <h1> You are at the feed page! </h1>
 <p> You are now logged in as {{ user_name }} </p>

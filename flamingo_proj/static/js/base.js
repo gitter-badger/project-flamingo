@@ -53,7 +53,7 @@ function post_delete(el, postId) {
                 var toDelete = $("#post" + postId);
                 toDelete.remove();
                 console.log("You deleted this post: " + toDelete);
-        })
+        });
     }
 }
 
@@ -75,6 +75,18 @@ function submit_post(){
         url: "/posts/create/",
         data: $('#content').serialize()
     }).done(function(result){
-        console.log("You posted: " + result.you_posted);
-    })
+        var $new_post = $("<div>", {class: "post", id: "post" + result.postId});
+        $("#posts").prepend($new_post);
+        $new_post.load(location.href + " #post" + result.postId, function() {
+                $(this).children(':first').unwrap();
+            });
+        console.log($new_post);
+    });
+}
+
+function auto_refresh() {
+    setTimeout( function () {
+        $('#posts').fadeOut('slow').load(location.href + " #posts").fadeIn('slow');
+        refresh();
+    }, 8000);
 }
