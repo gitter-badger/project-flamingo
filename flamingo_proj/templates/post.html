@@ -1,8 +1,20 @@
 <div class="post" id="post{{ post.id }}">
     <div>
-        <hr>
-        <a href="{{ post.posted_by.get_absolute_url }}">{{ post.posted_by.get_full_name }}</a>
-        <small>{{ post.created }} </small>
+      <hr>
+        {% if post.shared %}
+          <strong> Shared by <a href="{{ post.posted_by.get_absolute_url }}">{{ post.posted_by.get_full_name }}</a></strong>
+          <br>
+          <strong>
+            <a href="{{ post.shared.original_post.get_absolute_url }}"> Original Post</a>
+          </strong>
+          <br>
+        {% else %}
+          <strong> Posted by <a href="{{ post.posted_by.get_absolute_url }}">{{ post.posted_by.get_full_name }}</a>
+          </strong>
+          <br>
+        {% endif %}
+      <hr>
+        <strong> <a href="{{ post.get_absolute_url }}">{{ post.created }}</a> </strong>
 
         {% if post.posted_by == request.user %}
         <input class='delete-button'
@@ -12,11 +24,16 @@
                id="delete_button{{ post.id }}"
                data-post-id="{{ post.id }}" />
         {% endif %}
+        <div class="post-content">
         <br>
+        {{ post.content|safe|urlize|linebreaksbr }} 
+        <br>
+        </div>
 
-        {{ post.content|safe|urlize }} <br>
+        <div>
         <small class = 'like-count'
                id="like_count{{ post.id }}" > {{ post.likes.count }} people like this </small>
+
         <input class='like-button'
                onClick="return like_dislike(this, {{ post.id }})"
                type="button"
@@ -27,6 +44,14 @@
                {% endif %}
                id="like_button{{ post.id }}"
                data-post-id="{{ post.id }}" />
-        
+
+        <input class='share-button'
+               onClick="return post_share(this, {{ post.id }})"
+               type="button"
+               value="Share"
+               id="sharebutton{{ post.id }}"
+               data-post-id="{{ post.id }}" />
+        </div>
     </div>
+    <br>
 </div>

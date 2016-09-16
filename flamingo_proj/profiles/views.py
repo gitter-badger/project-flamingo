@@ -15,6 +15,7 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
             posted_by=self.object.user.id).order_by('-created')
         context = super(ProfileView, self).get_context_data(**kwargs)
         context['posts'] = Post.add_liked_by_user(posts, self.request.user)
+        Post.add_shared_property(context['posts'])
         return context
 
 

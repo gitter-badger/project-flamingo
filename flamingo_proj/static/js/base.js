@@ -58,6 +58,21 @@ function post_delete(el, postId) {
 }
 
 
+function post_share(el, postId) {
+  jQuery.ajax({
+    type:"POST",
+    url:'/posts/' + postId + '/share/'
+  }).done(function(result){
+    var $shared_post = $("<div>", {class: "post", id: "post" + result.postId});
+    $("#posts").prepend($shared_post);
+    $shared_post.load(location.href + " #post" + result.postId, function() {
+      $(this).children(':first').unwrap();
+    });
+    console.log($shared_post);
+  });
+}
+
+
 function submit_post(){
     jQuery.ajax({
         type: "POST",
@@ -72,7 +87,6 @@ function submit_post(){
         console.log($new_post);
     });
 }
-
 
 function auto_refresh() {
     setTimeout( function () {

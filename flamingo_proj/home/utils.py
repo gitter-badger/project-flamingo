@@ -31,6 +31,7 @@ def get_query(query_string, search_fields, tag=False):
             query = query & or_query
     return query
 
+
 def get_key(obj):
     if isinstance(obj, Profile):
         return obj.user.date_joined
