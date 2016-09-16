@@ -16,6 +16,13 @@ class PostView(LoginRequiredMixin, generic.DetailView):
     model = Post
     template_name = 'posts/post_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(PostView, self).get_context_data(**kwargs)
+        Post.add_liked_by_user([self.object], self.request.user)
+        Post.add_shared_property([self.object])
+        context['post'] = context['object']
+        return context
+
 
 def create_post(request):
     if request.method == "POST":
@@ -97,6 +104,7 @@ def post_delete(request, id):
 
 def post_share(request, id):
     instance = get_object_or_404(Post, id=id)
-    Share.objects.create(original_post_id=id, shared_by_id=request.user.id)
+    share = Post.objects.create(posted_by=request.user, content=instance.content)
+    Share.objects.create(original_post_id=id, shared_post_id=share.id)
     messages.success(request, "You have successfully shared this post!")
     return redirect('profiles:go-to-profile')

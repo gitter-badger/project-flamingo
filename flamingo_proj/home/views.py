@@ -20,11 +20,9 @@ def home(request):
     if request.user.is_authenticated():
         logged_user = request.user
         posts = Post.objects.filter(posted_by__in=
-                    [fol.user.id for fol in logged_user.profile.follows.all()])
+                    [fol.user.id for fol in logged_user.profile.follows.all()]).order_by('-created')
         posts = Post.add_liked_by_user(posts, request.user)
-        shares = Share.objects.filter(shared_by__in=
-                    [fol.user.id for fol in logged_user.profile.follows.all()])
-        posts = sorted(chain(posts, shares), key=lambda instance: instance.created)
+        Post.add_shared_property(posts)
         context = {
             'user_name': logged_user.get_full_name(),
             'posts': posts,

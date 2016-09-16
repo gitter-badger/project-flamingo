@@ -25,6 +25,14 @@ class Post(TimeStampedModel):
         return re.findall(r'#[a-zA-Z0-9]+', self.content)
 
     @staticmethod
+    def add_shared_property(set_of_posts):
+        for post in set_of_posts:
+            if Share.objects.filter(shared_post_id=post.id):
+                post.shared = True
+            else:
+                post.shared = False
+
+    @staticmethod
     def add_liked_by_user(set_of_posts, user):
         for post in set_of_posts:
             try:
@@ -43,11 +51,11 @@ class Post(TimeStampedModel):
 
 @python_2_unicode_compatible
 class Share(TimeStampedModel):
-    original_post = models.ForeignKey(Post)
-    shared_by = models.ForeignKey(settings.AUTH_USER_MODEL)
+    original_post = models.ForeignKey(Post, related_name="original")
+    shared_post = models.OneToOneField(Post)
 
     def __str__(self):
-        return "Shared by {}".format(self.shared_by.get_full_name())
+        return "Shared by {}".format(self.shared_post.posted_by.get_full_name())
 
 
 @python_2_unicode_compatible
