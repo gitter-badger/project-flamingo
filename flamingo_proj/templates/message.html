@@ -1,0 +1,10 @@
+<div class="message" id="message{{ message.id }}">
+  <hr>
+  <strong> To: </strong> <a href="{{ message.recipient.get_absolute_url }}">{{ message.recipient.get_full_name }}</a>
+  <br>
+  <strong> From: </strong> <a href="{{ message.sender.get_absolute_url }}">{{ message.sender.get_full_name }}</a>
+  <br>
+  <p> {{ message.message_body }} </p>
+  <br>
+  <strong> Sent at {{ message.sent_at }}</strong>
+</div>

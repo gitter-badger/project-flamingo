@@ -1,0 +1,5 @@
+<form method="POST" action=""> {% csrf_token %}
+  <input type="text" name="message_body" id="message_body">
+  <input type="text" name="recipient" id="recipient">
+    <input type="button" value="Send" onClick="return submit_message(this)" />
+</form>

@@ -88,6 +88,25 @@ function submit_post(){
     });
 }
 
+function submit_message(){
+    jQuery.ajax({
+        type: "POST",
+        url: "/messages/compose/",
+        data: {
+          message_body: $('#message_body').val(),
+          recipient: $('#recipient').val()
+        }
+    }).done(function(result){
+        var $message = $("<div>", {class: "message", id: "message" + result.messageId});
+        $("#chat").prepend($message);
+        $message.load(location.href + " #message" + result.messageId, function() {
+                $(this).children(':first').unwrap();
+            });
+        console.log($message);
+    });
+}
+
+
 function auto_refresh() {
     setTimeout( function () {
         $('#posts').fadeOut('slow').load(location.href + " #posts").fadeIn('slow');
