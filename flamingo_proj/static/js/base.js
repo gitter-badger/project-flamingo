@@ -91,6 +91,6 @@ function submit_post(){
 function auto_refresh() {
     setTimeout( function () {
         $('#posts').fadeOut('slow').load(location.href + " #posts").fadeIn('slow');
-        refresh();
-    }, 8000);
+        auto_refresh();
+    }, 10000);
 }
