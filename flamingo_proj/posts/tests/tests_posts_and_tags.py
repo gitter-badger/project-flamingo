@@ -1,12 +1,13 @@
 from django.test import TestCase, Client
 from posts.models import Post, Tag
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 
 MyUser = get_user_model()
 
 
-class TestPosts(TestCase):
+class TestTags(TestCase):
 
     def setUp(self):
         self.u = MyUser(5, email='test@gmail.com', password='testpass', first_name="Simo")
@@ -36,7 +37,7 @@ class TestPosts(TestCase):
         self.assertNotIn(self.p1, self.second_day_tag.posts.all())
 
     def test_get_hash_tags(self):
-        self.assertEqual(self.p1.get_hash_tags(), ['#gym', '#flex'])
+        self.assertEqual(self.p1.get_hash_tags(), set(['#gym', '#flex']))
         self.assertEqual(len(self.p1.get_hash_tags()), 2)
 
     def test_delete_tag_reference_on_post_delete(self):
@@ -54,3 +55,16 @@ class TestPosts(TestCase):
         self.p2.save()
         self.removed_tag = Tag.objects.get(tag="#secondday")
         self.assertNotIn(self.p2, self.removed_tag.posts.all())
+
+    def test_post_signal_for_tags_to_links(self):
+        self.p3 = Post(posted_by=self.u, content="#hash tag #hashtag")
+        self.p3.save()
+        self.p4 = Post(posted_by=self.u, content="#hashtag hash #hash")
+        self.p4.save()
+        hash_url = reverse('posts:tag', kwargs={'tag': 'hash'})
+        self.assertEqual(hash_url, '/posts/tag/hash/')
+        hashtag_url = reverse('posts:tag', kwargs={'tag': 'hashtag'})
+        self.assertEqual(hashtag_url, '/posts/tag/hashtag/')
+        self.assertEqual(self.p3.content,
+                         '<a href="{}">#hash</a> tag <a href="{}">#hashtag</a>'
+                         .format(hash_url, hashtag_url))
