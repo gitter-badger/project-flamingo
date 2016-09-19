@@ -26,8 +26,7 @@ class MyUserChangeForm(UserChangeForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('user', 'birthdate', 'rating', 'follows')
-
+        fields = ('user', 'birthdate', 'follows')
 
     def clean(self):
         cleaned_data = super(ProfileForm, self).clean()

@@ -1,15 +1,21 @@
 {% extends "base.html" %}
-
+{% load static %}
 
 {% block title %} {{ object }} | {{ block.super }} {% endblock title %}
 {% block content %}
-    {% if user.id == object.user_id %} 
-        <h1> Me </h1>
-    {% else %} 
-        <h1> {{ object }} </h1>
+    {% if user.id == object.user_id %} <h1> Me </h1>
+    {% else %} <h1> {{ object }} </h1>
     {% endif %}
-    <p> Birthdate: {{ object.birthdate }} <br> Rating: {{ object.rating }} </p>
-    {% include "create_post_form.html" %}
-    <h2> You posts: </h2>
+
+    <p> Birthdate: {{ object.birthdate }} <br>
+    {% load ratings %}
+    {% ratings object %}
+    <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
+    <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+        {% if object.user_id == user.id %}
+        {% include "create_post_form.html" %}
+        {% endif %}
+        <br>
+    <h2> Posts: </h2>
     {% include "display_posts.html" %}
 {% endblock content%}

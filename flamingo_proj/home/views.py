@@ -50,12 +50,21 @@ def search(request):
     query_string = ''
     found_users = None
     results = []
+    posts_result = []
+    profiles_result = []
     if('q' in request.GET) and request.GET.get('q').strip():
         query_string = request.GET.get('q')
         user_query = get_query(query_string, ['user__first_name', 'user__last_name', ])
-        users  = Profile.objects.filter(user_query)
+        users = Profile.objects.filter(user_query)
         posts_query = get_query(query_string, ['tag__tag'], tag=True)
         posts = Post.objects.filter(posts_query)
+        posts_result.extend(posts)
+        profiles_result.extend(users)
         results = sorted(chain(users, posts), key=lambda instance: get_key(instance), reverse=True)
-    return render(request, 'search.html',
-                  context={'search_results': results, 'search': query_string})
+    return render(request, 'home/search.html',
+                  context={
+                      'posts': posts_result,
+                      'posts_count': len(posts_result),
+                      'profiles': profiles_result,
+                      'profiles_count': len(profiles_result),
+                      'search_results': results, 'search': query_string})

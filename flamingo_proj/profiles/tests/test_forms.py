@@ -17,18 +17,6 @@ class ProfileFormTestCase(TestCase):
                                                            last_name='Quinn')
         self.harley_profile = Profile.objects.get(user=self.harley)
 
-
-    def test_profile_rating_validation(self):
-        form_data = {'user': self.harley.id, 'rating': '6'}
-        form = ProfileForm(instance=self.harley_profile, data=form_data)
-        self.assertFalse(form.is_valid())
-        form_data['rating']='-1'
-        form = ProfileForm(instance=self.harley_profile, data=form_data)
-        self.assertFalse(form.is_valid())
-        form_data['rating']='3.5'
-        form = ProfileForm(instance=self.harley_profile, data=form_data)
-        self.assertTrue(form.is_valid())
-
     def test_profile_birthdate_validation(self):
         form_data = {'user': self.harley.id, 'birthdate': 'date', 'rating': '5'}
         form = ProfileForm(instance=self.harley_profile, data=form_data)

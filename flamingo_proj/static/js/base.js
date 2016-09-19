@@ -94,3 +94,14 @@ function auto_refresh() {
         auto_refresh();
     }, 10000);
 }
+
+function logout(){
+    if (confirm('Are you sure you want to log out?')){
+        jQuery.ajax({
+            type:"POST",
+            url:'/logout/'
+        }).done(function(result){
+            console.log("You logged out!");
+        });
+    }
+}
