@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Trending tags in latest posts:</h1>
+
+<ul>
+{% for tag in trending %}
+    <li id="tag{{ tag.id }}"> <a href="{{ tag.get_absolute_url }}">{{ tag }}</a> - Found in {{ tag.get_occurrences}} posts </li>
+{% endfor %}
+</ul>
+{% endblock content %}

@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 import re
-
+from collections import Counter
 
 from django.db import models
 from django.conf import settings
@@ -20,9 +20,6 @@ class TimeStampedModel(models.Model):
 class Post(TimeStampedModel):
     posted_by = models.ForeignKey(settings.AUTH_USER_MODEL)
     content = models.TextField(max_length=1000, editable=True)
-
-    # def get_hash_tags(self):
-    #     return re.findall(r'#[a-zA-Z0-9]+$', self.content)
 
     def get_hash_tags(self):
         return set(re.findall(r'(?<![\w\d])#[a-zA-Z0-9]+(?![\w\d])', self.content))
@@ -54,6 +51,10 @@ class Post(TimeStampedModel):
     def get_absolute_url(self):
         return reverse('posts:detail', kwargs={'pk': self.id})
 
+    @classmethod
+    def get_latest(cls):
+        return cls.objects.order_by('-created')[:100]
+
 
 @python_2_unicode_compatible
 class Share(TimeStampedModel):
@@ -69,8 +70,21 @@ class Tag(models.Model):
     tag = models.CharField(max_length=30, unique=True)
     posts = models.ManyToManyField(Post)
 
+    @classmethod
+    def get_trending(cls):
+        latest_posts = Post.get_latest()
+        tags_found = [tag for post in latest_posts for tag in post.tag_set.all()]
+        tag_counts = Counter(tags_found).most_common(5)
+        return [t[0] for t in tag_counts]
+
     def __str__(self):
         return "Tag {}".format(self.tag)
+
+    def get_absolute_url(self):
+        return reverse('posts:tag', kwargs={'tag': self.tag[1:]})
+
+    def get_occurrences(self):
+        return self.posts.all().count()
 
 
 @python_2_unicode_compatible
