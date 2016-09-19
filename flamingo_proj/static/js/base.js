@@ -88,22 +88,18 @@ function submit_post(){
     });
 }
 
-function submit_message(){
-    jQuery.ajax({
+function submit_message(recipientId){
+    var message = prompt("Message: ");
+    if (message != null) {
+      jQuery.ajax({
         type: "POST",
         url: "/messages/compose/",
         data: {
-          message_body: $('#message_body').val(),
-          recipient: $('#recipient').val()
+          message_body: message,
+          recipient: recipientId,
         }
-    }).done(function(result){
-        var $message = $("<div>", {class: "message", id: "message" + result.messageId});
-        $("#chat").prepend($message);
-        $message.load(location.href + " #message" + result.messageId, function() {
-                $(this).children(':first').unwrap();
-            });
-        console.log($message);
-    });
+      });
+    }
 }
 
 
@@ -112,4 +108,16 @@ function auto_refresh() {
         $('#posts').fadeOut('slow').load(location.href + " #posts").fadeIn('slow');
         auto_refresh();
     }, 10000);
+}
+
+function delete_message(el, messageId){
+    if (confirm('Are you sure you want to delete this message?')){
+        jQuery.ajax({
+            type:"POST",
+            url:'/messages/' + messageId + '/delete/'
+        }).done(function(result){
+                var toDelete = $("#message" + messageId);
+                toDelete.remove();
+        });
+    }
 }
