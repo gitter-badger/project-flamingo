@@ -7,4 +7,14 @@
   <p> {{ message.message_body }} </p>
   <br>
   <strong> Sent at {{ message.sent_at }}</strong>
+
+  {% if message.sender == user or message.recipient == user %}
+  <input class='delete-message-button'
+          onClick="return delete_message(this, {{ message.id }})"
+          type="button"
+          value="Delete"
+          id="delete_message_button{{ message.id }}"
+          data-message-id="{{ message.id }}" />
+  {% endif %}
+ 
 </div>
