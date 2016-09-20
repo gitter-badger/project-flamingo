@@ -95,19 +95,6 @@ class ProfileTestCase(TestCase):
         test_profile = Profile.objects.all()[0]
         self.assertEqual(test_profile.user, self.test_user)
 
-    def test_profile_rating(self):
-        test_profile = Profile.objects.all()[0]
-        test_profile.rating = -2
-        with self.assertRaises(ValidationError):
-            test_profile.save()
-
-        test_profile.rating = 6
-        with self.assertRaises(ValidationError):
-            test_profile.save()
-
-        test_profile.rating = 4.5
-        self.assertEqual(test_profile.rating, 4.5)
-
     def test_profile_follows(self):
         test_profile = Profile.objects.all()[0]
         friend = MyUser.objects.create_user(email="test@local.test",

@@ -21,7 +21,6 @@ def create_tags(sender, instance, created, **kwargs):
             if elem == t:
                 split_content[index] = '<a href="{}">{}</a>'.format(tag_link, t)
     result_content = ''.join(split_content)
-    print "Result content: ", result_content
     this_instance = models.Post.objects.filter(id=instance.id)
     this_instance.update(content=result_content)
 
@@ -29,5 +28,3 @@ def create_tags(sender, instance, created, **kwargs):
     for old in old_refs:
         old.posts.remove(instance)
         old.save()
-
-    print instance.content

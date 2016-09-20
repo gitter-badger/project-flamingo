@@ -118,6 +118,17 @@ function delete_message(el, messageId){
         }).done(function(result){
                 var toDelete = $("#message" + messageId);
                 toDelete.remove();
+    }
+  }
+}
+
+function logout(){
+    if (confirm('Are you sure you want to log out?')){
+        jQuery.ajax({
+            type:"POST",
+            url:'/logout/'
+        }).done(function(result){
+            console.log("You logged out!");
         });
     }
 }

@@ -32,6 +32,7 @@ AUTH_USER_MODEL = 'profiles.MyUser'
 AUTH_POST_MODEL = 'posts.Post'
 
 INSTALLED_APPS = [
+    'star_ratings',
     'home.apps.HomeConfig',
     'messaging.apps.MessagingConfig',
     'posts.apps.PostsConfig',

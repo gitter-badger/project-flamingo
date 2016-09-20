@@ -24,5 +24,6 @@ urlpatterns = [
     url(r'^profile/', include('profiles.urls', namespace='profiles')),
     url(r'^messages/', include('messaging.urls', namespace='messages')),
     url(r'^posts/', include('posts.urls', namespace='posts')),
+    url(r'^ratings/', include('star_ratings.urls', namespace='ratings', app_name='ratings')),
     url(r'^admin/', admin.site.urls),
 ]

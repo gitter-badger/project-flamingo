@@ -115,3 +115,8 @@ def post_share(request, id):
     else:
         messages.error(request, "Something went wrong!")
         return JsonResponse({'you_posted': "Error!"})
+
+
+def trending(request):
+    context = {'trending': Tag.get_trending()}
+    return render(request, 'posts/trending.html', context)

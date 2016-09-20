@@ -22,10 +22,10 @@ class MyUserAdmin(UserAdmin):
 
 class ProfileAdmin(admin.ModelAdmin):
     form = ProfileForm
-    list_display = ('user', 'birthdate', 'rating')
+    list_display = ('user', 'birthdate')
     fieldsets = (
         (None, {'fields': ('user', )}),
-        ('Profile Information', {'fields': ('birthdate', 'rating', 'follows')}),
+        ('Profile Information', {'fields': ('birthdate', 'follows')}),
     )
     filter_horizontal = ('follows',)
 

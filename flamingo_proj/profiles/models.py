@@ -83,14 +83,8 @@ class Profile(models.Model):
     birthdate = models.DateField(blank=True, null=True)
     follows = models.ManyToManyField('Profile', related_name='followed_by',
                                      symmetrical=False, blank=True)
-    rating = models.FloatField(
-        default=0.0,
-        validators=[MinValueValidator(0.0), MaxValueValidator(5.0)]
-    )
 
     def clean_fields(self, exclude=None):
-        if self.rating < 0.0 or self.rating > 5.0:
-            raise ValidationError('Invalid rating value')
         if self in self.follows.all():
             raise ValidationError('User cannot follow self')
         super(Profile, self).clean_fields()
