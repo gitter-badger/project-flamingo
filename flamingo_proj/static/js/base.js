@@ -118,7 +118,7 @@ function delete_message(el, messageId){
         }).done(function(result){
                 var toDelete = $("#message" + messageId);
                 toDelete.remove();
-    }
+    });
   }
 }
 
