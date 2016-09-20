@@ -128,6 +128,7 @@ function logout(){
             type:"POST",
             url:'/logout/'
         }).done(function(result){
+            window.location.href = "/logout/";
             console.log("You logged out!");
         });
     }

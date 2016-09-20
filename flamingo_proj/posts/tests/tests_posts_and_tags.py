@@ -55,16 +55,3 @@ class TestTags(TestCase):
         self.p2.save()
         self.removed_tag = Tag.objects.get(tag="#secondday")
         self.assertNotIn(self.p2, self.removed_tag.posts.all())
-
-    def test_post_signal_for_tags_to_links(self):
-        self.p3 = Post(posted_by=self.u, content="#hash tag #hashtag")
-        self.p3.save()
-        self.p4 = Post(posted_by=self.u, content="#hashtag hash #hash")
-        self.p4.save()
-        hash_url = reverse('posts:tag', kwargs={'tag': 'hash'})
-        self.assertEqual(hash_url, '/posts/tag/hash/')
-        hashtag_url = reverse('posts:tag', kwargs={'tag': 'hashtag'})
-        self.assertEqual(hashtag_url, '/posts/tag/hashtag/')
-        self.assertEqual(self.p3.content,
-                         '<a href="{}">#hash</a> tag <a href="{}">#hashtag</a>'
-                         .format(hash_url, hashtag_url))

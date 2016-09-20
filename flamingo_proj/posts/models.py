@@ -27,6 +27,28 @@ class Post(TimeStampedModel):
     def split_by_hashtag(self):
         return re.split(r'((?<![\w\d])#[a-zA-Z0-9]+(?![\w\d]))', self.content)
 
+    def create_hashtags(self):
+        old_refs = self.tag_set.all()
+        hash_tags = self.get_hash_tags()
+        split_content = self.split_by_hashtag()
+        for t in hash_tags:
+            # Adding the new tags
+            obj, created = Tag.objects.get_or_create(tag=t)
+            obj.posts.add(self)
+            obj.save()
+            tag_link = reverse('posts:tag', kwargs={'tag': t[1:]})
+            for index, elem in enumerate(split_content):
+                if elem == t:
+                    split_content[index] = '<a href="{}">{}</a>'.format(tag_link, t)
+        result_content = ''.join(split_content)
+        this_instance = Post.objects.filter(id=self.id)
+        this_instance.update(content=result_content)
+
+        old_refs = old_refs.exclude(tag__in=hash_tags)
+        for old in old_refs:
+            old.posts.remove(self)
+            old.save()
+
     @staticmethod
     def add_shared_property(set_of_posts):
         for post in set_of_posts:
