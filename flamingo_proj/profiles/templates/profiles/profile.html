@@ -4,8 +4,11 @@
 {% block title %} {{ object }} | {{ block.super }} {% endblock title %}
 {% block content %}
     <div class="user-profile" id="userprofile{{object.user_id}}">
-    {% if user.id == object.user_id %} <h1> Me </h1>
-    {% else %} <h1> {{ object }} </h1>
+    {% if user.id == object.user_id %} 
+        <h1> Me </h1>
+    {% else %} 
+        <h1> {{ object }} </h1>
+        {% include "message_form.html" %}
     {% endif %}
 
     <p> Birthdate: {{ object.birthdate }} <br>
