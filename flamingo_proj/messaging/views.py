@@ -35,7 +35,6 @@ def trash(request):
 def compose(request):
     if request.method == "POST":
         form = MessageForm(request.POST or None)
-        print request.POST
         form.message_body = request.POST["message_body"]
         form.recipient = request.POST["recipient"]
         if form.is_valid():
@@ -46,7 +45,9 @@ def compose(request):
             return JsonResponse({'you_sent': message.message_body,
                                  'messageId': message.id})
         else:
-            print form.errors
+            messages.error(request, "You entered something wrong here!")
+            return JsonResponse({'message_body': 'Error!'})
+
     else:
         messages.error(request, "Something went wrong with this message!")
         return JsonResponse({'message_body': 'Error!'})
@@ -57,9 +58,6 @@ def detail(request, message_id):
     message = get_object_or_404(Message, id=message_id)
     if (message.sender != user) and (message.recipient != user):
         raise Http404
-    if message.read_at is None and message.recipient == user:
-        message.read_at = now
-        message.save()
 
     context = {'message': message}
     return render(request, "message.html", context=context)
@@ -70,24 +68,24 @@ def delete_message(request, message_id):
     deleted_message = get_object_or_404(Message, id=message_id)
     deleted = False
     if deleted_message.sender == request.user:
+        deleted = True
         if deleted_message.sender_deleted_at is None:
             deleted_message.sender_deleted_at = now
-            deleted = True
         else:
-            deleted_message.add_permanent_delete()
+            deleted_message.sender_deleted_perm = True
     if deleted_message.recipient == request.user:
+        deleted = True
         if deleted_message.recipient_deleted_at is None:
             deleted_message.recipient_deleted_at = now
-            deleted = True
         else:
-            deleted_message.add_permanent_delete()
-    if deleted:
+            deleted_message.recipient_deleted_perm = True
+    if deleted_message.for_delete():
+        deleted_message.delete()
+        return redirect('messages:trash')
+    elif deleted:
         deleted_message.save()
         messages.success(request, "Message deleted successfully.")
         return redirect('messages:inbox')
-    elif deleted_message.deleted():
-        deleted_message.delete()
-        return redirect('messages:trash')
     else:
         raise Http404("You cannot delete this message!")
 
