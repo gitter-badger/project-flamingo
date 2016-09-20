@@ -34,6 +34,7 @@ AUTH_POST_MODEL = 'posts.Post'
 INSTALLED_APPS = [
     'star_ratings',
     'home.apps.HomeConfig',
+    'messaging.apps.MessagingConfig',
     'posts.apps.PostsConfig',
     'profiles.apps.ProfilesConfig',
     'django.contrib.admin',

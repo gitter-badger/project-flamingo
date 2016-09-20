@@ -88,11 +88,38 @@ function submit_post(){
     });
 }
 
+function submit_message(recipientId){
+    var message = prompt("Message: ");
+    if (message != null) {
+      jQuery.ajax({
+        type: "POST",
+        url: "/messages/compose/",
+        data: {
+          message_body: message,
+          recipient: recipientId,
+        }
+      });
+    }
+}
+
+
 function auto_refresh() {
     setTimeout( function () {
         $('#posts').fadeOut('slow').load(location.href + " #posts").fadeIn('slow');
         auto_refresh();
     }, 10000);
+}
+
+function delete_message(el, messageId){
+    if (confirm('Are you sure you want to delete this message?')){
+        jQuery.ajax({
+            type:"POST",
+            url:'/messages/' + messageId + '/delete/'
+        }).done(function(result){
+                var toDelete = $("#message" + messageId);
+                toDelete.remove();
+    }
+  }
 }
 
 function logout(){
