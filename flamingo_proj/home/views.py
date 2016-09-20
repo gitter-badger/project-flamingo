@@ -48,7 +48,6 @@ def sign_up(request):
 @login_required
 def search(request):
     query_string = ''
-    found_users = None
     results = []
     posts_result = []
     profiles_result = []
