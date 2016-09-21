@@ -75,3 +75,8 @@ class TestHome(TestCase):
 
         self.assertIn(post_div_one, full_content)
         self.assertNotIn(post_div_error, full_content)
+
+    def test_search_results(self):
+        response = self.client.post('/search/', {'id_q': 'Simo'})
+        full_content = response.content
+        print full_content
