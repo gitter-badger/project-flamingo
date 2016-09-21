@@ -22,7 +22,6 @@ class ProfileDetailTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
-
     def test_detail_view_with_non_existing_profile(self):
         self.client.force_login(self.joker)
         url = reverse('profiles:profile', args=(101,))
