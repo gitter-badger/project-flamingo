@@ -16,5 +16,11 @@
           id="delete_message_button{{ message.id }}"
           data-message-id="{{ message.id }}" />
   {% endif %}
+
+  {% if message.recipient == user %}
+    <form method="POST" action=""> {% csrf_token %}
+    <input type="button" value="Reply" onClick="return submit_message({{ message.sender_id}})" />
+  {% endif %}
  
+
 </div>
