@@ -140,9 +140,12 @@ function auto_refresh_tab() {
       $.get('check', function(data){
         if (data.new_messages) {
         var active = $(".tabs .tablink").attr("href");
+        console.log("ACTIVE: " + active)
         $("#chat").fadeOut('slow').load(location.origin + active + " #chat").fadeIn('slow');
+        $("#inbox_li").load(location.href + " #inbox_li");
+        console.log($("div.message").first().html());
         }});
-        auto_refresh_tab();
-  }, 5 * 60 * 10000);
+//        auto_refresh_tab();
+  }, 1000);
 }
 

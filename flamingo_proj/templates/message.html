@@ -6,7 +6,7 @@
   <br>
   <p> {{ message.message_body }} </p>
   <br>
-  <strong> Sent at {{ message.sent_at }}</strong>
+  <strong id="message{{ message.id }}-timestamp"> Sent at {{ message.sent_at }}</strong>
 
   {% if message.sender == user or message.recipient == user %}
   <input class='delete-message-button'
@@ -20,7 +20,6 @@
   {% if message.recipient == user %}
     <form method="POST" action=""> {% csrf_token %}
     <input type="button" value="Reply" onClick="return submit_message({{ message.sender_id}})" />
+    </form>
   {% endif %}
- 
-
 </div>

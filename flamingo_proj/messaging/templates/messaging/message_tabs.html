@@ -21,10 +21,10 @@
 <body>
 
 <div class="tabs" id="tabs">
-  <ul>
-    <li><a id="inbox" href="{% url 'messages:inbox' %}" class="tablink" >Inbox({{ inbox_count }})</a></li>
-    <li><a id="sent" href="{% url 'messages:sent' %}" class="tablink" >Sent({{ sent_count }})</a></li>
-    <li><a id="trash" href="{% url 'messages:trash' %}" class="tablink" >Trash({{ trash_count }})</a></li>
+  <ul id="tabs_ul">
+    <li><a id="inbox_li" href="{% url 'messages:inbox' %}" class="tablink" >Inbox({{ inbox_count }})</a></li>
+    <li><a id="sent_li" href="{% url 'messages:sent' %}" class="tablink" >Sent({{ sent_count }})</a></li>
+    <li><a id="trash_li" href="{% url 'messages:trash' %}" class="tablink" >Trash({{ trash_count }})</a></li>
   </ul>
   <div id="inbox">
   </div>

@@ -9,7 +9,6 @@ from django.contrib import messages
 
 from .models import Message
 from .forms import MessageForm
-from profiles.models import MyUser
 
 
 @login_required
@@ -23,9 +22,10 @@ def messages_main(request):
 
 @login_required
 def message_check(request):
-    treshold = timezone.now() - timedelta(minutes=5)
-    new_messages = Message.objects.filter(recipient=request.user, sent_at__gt=treshold)
-    return JsonResponse({'new_messages': bool(new_messages)})
+    threshold = timezone.now() - timedelta(minutes=5)
+    new_messages = Message.objects.filter(recipient=request.user, sent_at__gt=threshold)
+    # return JsonResponse({'new_messages': bool(new_messages)})
+    return JsonResponse({'new_messages': True})
 
 
 @login_required
@@ -69,6 +69,7 @@ def compose(request):
     else:
         messages.error(request, "Something went wrong with this message!")
         return JsonResponse({'message_body': 'Error!'})
+
 
 def detail(request, message_id):
     user = request.user
