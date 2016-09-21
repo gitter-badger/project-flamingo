@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.http import Http404, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
@@ -11,24 +13,40 @@ from profiles.models import MyUser
 
 
 @login_required
+def messages_main(request):
+    inbox_count = Message.objects.inbox_for(request.user).count()
+    sent_count = Message.objects.outbox_for(request.user).count()
+    trash_count = Message.objects.trash_for(request.user).count()
+    context = {'inbox_count': inbox_count, 'sent_count': sent_count, 'trash_count': trash_count}
+    return render(request, 'messaging/messages_view.html', context=context)
+
+
+@login_required
+def message_check(request):
+    treshold = timezone.now() - timedelta(minutes=5)
+    new_messages = Message.objects.filter(recipient=request.user, sent_at__gt=treshold)
+    return JsonResponse({'new_messages': bool(new_messages)})
+
+
+@login_required
 def inbox(request):
     message_list = Message.objects.inbox_for(request.user)
     context = {'message_list': message_list}
-    return render(request, 'messaging/inbox.html', context=context)
+    return render(request, 'display_chat.html', context=context)
 
 
 @login_required
 def sent(request):
     message_list = Message.objects.outbox_for(request.user)
     context = {'message_list': message_list}
-    return render(request, 'messaging/outbox.html', context=context)
+    return render(request, 'display_chat.html', context=context)
 
 
 @login_required
 def trash(request):
     message_list = Message.objects.trash_for(request.user)
     context = {'message_list': message_list}
-    return render(request, 'messaging/trash.html', context=context)
+    return render(request, 'display_chat.html', context=context)
 
 
 @login_required

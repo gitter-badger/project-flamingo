@@ -5,7 +5,8 @@ from django.views.generic import RedirectView
 from . import views
 
 urlpatterns = [
-    url(r'^$', RedirectView.as_view(permanent=True, url='inbox'), name='messages-redirect'),
+    url(r'^$', views.messages_main, name='main'),
+    url(r'^check/$', views.message_check, name='message-check'),
     url(r'^inbox/$', views.inbox, name='inbox'),
     url(r'^sent/$', views.sent, name='sent'),
     url(r'^compose/$', views.compose, name='compose'),

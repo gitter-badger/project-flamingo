@@ -105,6 +105,7 @@ function submit_message(recipientId){
 
 function auto_refresh() {
     setTimeout( function () {
+      console.log(location.href);
         $('#posts').fadeOut('slow').load(location.href + " #posts").fadeIn('slow');
         auto_refresh();
     }, 10000);
@@ -133,3 +134,15 @@ function logout(){
         });
     }
 }
+
+function auto_refresh_tab() {
+    setTimeout(function () {
+      $.get('check', function(data){
+        if (data.new_messages) {
+        var active = $(".tabs .tablink").attr("href");
+        $("#chat").fadeOut('slow').load(location.origin + active + " #chat").fadeIn('slow');
+        }});
+        auto_refresh_tab();
+  }, 5 * 60 * 10000);
+}
+
