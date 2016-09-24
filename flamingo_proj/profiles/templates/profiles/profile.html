@@ -9,6 +9,7 @@
     {% else %} 
         <h1> {{ object }} </h1>
         {% include "message_form.html" %}
+        {% include "follow_button.html" %}
     {% endif %}
 
     <p> Birthdate: {{ object.birthdate }} <br>

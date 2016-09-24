@@ -43,6 +43,18 @@ function like_dislike(el, postId) {
       });
 }
 
+function follow_user(el, userId){
+    jQuery.ajax({
+        type:"POST",
+        url:'/profile/' + userId + '/follow/'
+    }).done(function(result){
+        if (result.followed_by_user){
+            el.value = "Unfollow";
+        } else {
+            el.value = "Follow";
+        }
+    });
+}
 
 function post_delete(el, postId) {
     if (confirm('Are you sure you want to delete this post?')){
