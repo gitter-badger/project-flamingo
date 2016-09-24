@@ -110,6 +110,9 @@ function submit_message(recipientId){
           message_body: message,
           recipient: recipientId,
         }
+      }).done(function(result){
+        $("#sent_li").load(location.href + " #sent_li");
+        $("#trash_li").load(location.href + " #trash_li");
       });
     }
 }
@@ -131,9 +134,13 @@ function delete_message(el, messageId){
         }).done(function(result){
                 var toDelete = $("#message" + messageId);
                 toDelete.remove();
-    });
-  }
+                $("#inbox_li").load(location.href + " #inbox_li");
+                $("#sent_li").load(location.href + " #sent_li");
+                $("#trash_li").load(location.href + " #trash_li");
+        });
+    };
 }
+
 
 function logout(){
     if (confirm('Are you sure you want to log out?')){
@@ -150,14 +157,10 @@ function logout(){
 function auto_refresh_tab() {
     setTimeout(function () {
       $.get('check', function(data){
-        if (data.new_messages) {
         var active = $(".tabs .tablink").attr("href");
-        console.log("ACTIVE: " + active)
         $("#chat").fadeOut('slow').load(location.origin + active + " #chat").fadeIn('slow');
         $("#inbox_li").load(location.href + " #inbox_li");
-        console.log($("div.message").first().html());
-        }});
-//        auto_refresh_tab();
-  }, 1000);
+        });
+        auto_refresh_tab();
+  }, 10000);
 }
-
