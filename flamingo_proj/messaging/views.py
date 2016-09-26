@@ -5,6 +5,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 
 from .models import Message
@@ -20,12 +22,26 @@ def messages_main(request):
     return render(request, 'messaging/messages_view.html', context=context)
 
 
+# @login_required
+# def message_check(request):
+#     threshold = timezone.now() - timedelta(minutes=5)
+#     new_messages = Message.objects.filter(recipient=request.user, sent_at__gt=threshold)
+#     # return JsonResponse({'new_messages': bool(new_messages)})
+#     return JsonResponse({'new_messages': True})
+
 @login_required
 def message_check(request):
-    threshold = timezone.now() - timedelta(minutes=5)
-    new_messages = Message.objects.filter(recipient=request.user, sent_at__gt=threshold)
-    # return JsonResponse({'new_messages': bool(new_messages)})
-    return JsonResponse({'new_messages': True})
+    temp = temp = Message.objects.not_seen_for(request.user)
+    json_val_list = temp.values_list('id', 'message_body').order_by('-sent_at')
+    new_messages = json.dumps(list(json_val_list), cls=DjangoJSONEncoder)
+    for message in temp:
+        message.recipient_seen = True
+        message.save()
+    return JsonResponse({
+        'new_messages': new_messages,
+        'new_messages_available': bool(json_val_list),
+        'new_messages_count': len(json_val_list),
+    })
 
 
 @login_required

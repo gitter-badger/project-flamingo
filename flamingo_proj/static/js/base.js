@@ -157,10 +157,21 @@ function logout(){
 function auto_refresh_tab() {
     setTimeout(function () {
       $.get('check', function(data){
-        var active = $(".tabs .tablink").attr("href");
-        $("#chat").fadeOut('slow').load(location.origin + active + " #chat").fadeIn('slow');
-        $("#inbox_li").load(location.href + " #inbox_li");
-        });
-        auto_refresh_tab();
-  }, 10000);
+        new_messages = JSON.parse(data.new_messages);
+
+        if (data.new_messages_available) {
+            for ( var i = 0 ; i < data.new_messages_count; i++ ){
+                  $("#inbox_li").load(location.href + " #inbox_li");
+
+                  var $new_message = $("<div>", {class: "message", id: "message" + new_messages[0][0]});
+                  $("#chat").prepend($new_message);
+                  console.log(location.href + "inbox/ #message" + new_messages[0][0]);
+                  $new_message.load(location.href + "inbox/ #message" + new_messages[0][0], function() {
+                        $(this).children(':first').unwrap();
+                  }).fadeIn('slow');
+            }
+        }
+      });
+      auto_refresh_tab();
+  }, 8000);
 }

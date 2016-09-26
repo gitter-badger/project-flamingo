@@ -19,6 +19,9 @@ class MessageManager(models.Manager):
     def trash_for(self, user):
         return self.filter(recipient=user, recipient_deleted_at__isnull=False, recipient_deleted_perm=False) | self.filter(sender=user, sender_deleted_at__isnull=False, sender_deleted_perm=False)
 
+    def not_seen_for(self, user):
+        return self.filter(recipient=user, recipient_seen=False, recipient_deleted_at__isnull=True)
+
 
 @python_2_unicode_compatible
 class Message(models.Model):
@@ -30,6 +33,7 @@ class Message(models.Model):
     sender_deleted_perm = models.BooleanField(default=False)
     recipient_deleted_at = models.DateTimeField(null=True, blank=True)
     recipient_deleted_perm = models.BooleanField(default=False)
+    recipient_seen = models.BooleanField(default=False)
 
     objects = MessageManager()
 
