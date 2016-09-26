@@ -12,7 +12,9 @@
         {% include "follow_button.html" %}
     {% endif %}
 
-    <p> Birthdate: {{ object.birthdate }} <br>
+    {% if object.birthdate %}
+        <p> Birthdate: {{ object.birthdate }} <br>
+    {% endif %}
     {% load ratings %}
     {% ratings object %}
     <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
